@@ -20,6 +20,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
+	
+	// i dont need POST method because spring doing in securyConfiguration
 	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public ModelAndView login() {
 		ModelAndView model = new ModelAndView();

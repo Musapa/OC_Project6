@@ -21,14 +21,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Column(name = "email")
+	@Column(name = "email", nullable=false)
 	private String email;
 
-	@Column(name = "password")
+	@Column(name = "password", nullable=false)
 	private String password;
 
-	@Column(name = "active")
-	private int active;
+	@Column(name = "active", nullable=false)
+	private boolean active;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -58,11 +58,11 @@ public class User {
 		this.password = password;
 	}
 
-	public int getActive() {
+	public boolean getActive() {
 		return active;
 	}
 
-	public void setActive(int active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 
