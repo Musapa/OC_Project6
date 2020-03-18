@@ -2,11 +2,29 @@ package com.openclassrooms.paymybuddy.domain;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "transaction")
 public class Transaction {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "transaction_id")
 	private Long id;
+	
+	@Column(name = "amount", nullable=false)
 	private BigDecimal amount;
+	
+	@Column(name = "fee", nullable=false)
 	private BigDecimal fee;
+	
+	@Column(name = "description", nullable=false)
 	private String description;
 	
 	

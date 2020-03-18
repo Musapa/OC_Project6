@@ -1,9 +1,25 @@
 package com.openclassrooms.paymybuddy.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "connection")
 public class Connection {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "connection_id")
 	private Long id;
+	
+	@Column(name = "email", nullable=false)
 	private String email;
+	
+	@Column(name = "name", nullable=false)
 	private String name;
 	
 	

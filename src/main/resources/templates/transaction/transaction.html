@@ -5,7 +5,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-<title>Home</title>
+<title>Transaction</title>
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
@@ -28,11 +28,11 @@
 	
 			<div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item active">
-						<a class="nav-link" href="/home/home">Home<span class="sr-only">(current)</span></a>
+					<li class="nav-item">
+						<a class="nav-link" href="/home/home">Home</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="/home/transaction">Transaction</a>
+						<a class="nav-link active" href="/home/transaction">Transaction<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Profile</a>
@@ -48,7 +48,7 @@
 		</nav>
 		
 		<h2>
-			Hi <span th:utext="${email}"></span>, this is the home page.
+			Hi <span th:utext="${email}"></span>, this is the transaction page.
 		</h2>
 		
 	</div>
