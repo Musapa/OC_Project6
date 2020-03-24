@@ -46,11 +46,16 @@
 				</ul>
 			</div>
 		</nav>
-		
-		<h2>
-			Hi <span th:utext="${email}"></span>, this is the transaction page.
-		</h2>
-		
+		<nav aria-label="breadcrumb">
+  			<ol class="breadcrumb">
+    			<li class="breadcrumb-item"><a href="/home/home">Home</a></li>
+    			<li class="breadcrumb-item active" aria-current="page">Transaction</li>
+  			</ol>
+		</nav>
+		<div class="container col-md-6 mb-2">	
+			<h3 class="text-center mt-5 mb-3 font-weight-bold">SEND MONEY</h3>
+			<a class="btn btn-primary btn-lg btn-block font-weight-light " href="/home/connection" role="button">Add Connection</a>
+		</div>
 	</div>
 </body>
 </html>

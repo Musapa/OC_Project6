@@ -7,6 +7,6 @@ import com.openclassrooms.paymybuddy.domain.User;
 
 @Repository("userRepository")
 public interface UserRepository extends JpaRepository<User, Long> {
-    
+	//method for email is not equals current User
 	User findByEmail(String email);
 }

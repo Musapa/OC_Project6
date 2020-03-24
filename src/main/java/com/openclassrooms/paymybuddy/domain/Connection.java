@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,19 +16,14 @@ public class Connection {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "connection_id")
 	private Long id;
-	
-	@Column(name = "email", nullable=false)
-	private String email;
-	
-	@Column(name = "name", nullable=false)
-	private String name;
-	
-	
-	public Connection(Long id, String email, String name) {
+
+	@OneToOne
+	private User user;
+
+	public Connection(Long id, User user) {
 		super();
 		this.id = id;
-		this.email = email;
-		this.name = name;
+		this.user = user;
 	}
 
 	public Long getId() {
@@ -38,20 +34,12 @@ public class Connection {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public User getUser() {
+		return user;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 }
