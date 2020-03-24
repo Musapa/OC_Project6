@@ -54,8 +54,21 @@
   			</ol>
 		</nav>
 		<div class="container col-md-6 mb-2">	
-			<h3 class="text-center mt-5 mb-3 font-weight-bold">Connections</h3>
-			<a class="btn btn-primary btn-lg btn-block font-weight-light " href="/home/connection/" role="button">Add Connection</a>
+			<h2>List of users.</h2>
+
+			<table border="1" cellpadding="5">
+		        <tr>
+		        	<th>ID</th>
+		            <th>E-mail</th>
+		        </tr>
+		        <c:forEach items="${listConnections}" var="connection">
+		        <tr>
+		        	<td>${connection.id}</td>
+		            <td>${connection.email}</td>
+		        </tr>
+		        </c:forEach>
+    		</table>
+
 		</div>
 	</div>
 </body>

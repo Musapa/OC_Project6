@@ -17,10 +17,8 @@ public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
 	EntityManager entityManager;
     @Override
     public List<Connection> findConnection(Long id) {
-        Query query = entityManager.createNativeQuery("SELECT em.user FROM connection as em " +
-                "WHERE em.connection_id ?", Connection.class);
-        query.setParameter(1, id + "%");
+        Query query = entityManager.createNativeQuery("SELECT * FROM connection WHERE connection_id = ?", Connection.class);
+        query.setParameter(1, id);
         return query.getResultList();
     }
-
 }
