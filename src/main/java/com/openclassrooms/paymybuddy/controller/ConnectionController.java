@@ -29,7 +29,6 @@ public class ConnectionController {
 	private UserRepository userRepository;
 
 	@RequestMapping(value = { "home/connection" }, method = RequestMethod.GET)
-
 	public ModelAndView getConnection() {
 		ModelAndView model = new ModelAndView();
 
@@ -38,13 +37,11 @@ public class ConnectionController {
 		User user = userRepository.findByEmail(authentication.getName());
 		List<Connection> connections = connectionRepository.findConnection(user.getId());
 
-		log.info("Get Connection: " + authentication.getName() +" Number of connections "+connections.size());
+		log.info("Get Connection: " + authentication.getName() + " Number of connections " + connections.size());
 
-		model.addObject("listConnections", connections);
+		model.addObject("connection", connections);
 		model.setViewName("connection/connection");
-		
-		System.out.println("List of connections:" + connections);
-		
+				
 		return model;
 	}
 }

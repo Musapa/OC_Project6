@@ -20,12 +20,15 @@ public class Connection {
 	@OneToOne
 	private User user;
 
+	public Connection() {
+	}
+	
 	public Connection(Long id, User user) {
 		super();
 		this.id = id;
 		this.user = user;
 	}
-
+	
 	public Long getId() {
 		return id;
 	}

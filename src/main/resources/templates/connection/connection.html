@@ -55,19 +55,24 @@
 		</nav>
 		<div class="container col-md-6 mb-2">	
 			<h2>List of users.</h2>
-
-			<table border="1" cellpadding="5">
+		
+		<table>
+		    <thead>
 		        <tr>
-		        	<th>ID</th>
-		            <th>E-mail</th>
+		            <th> ID </th>
+		            <th> Email </th>
 		        </tr>
-		        <c:forEach items="${listConnections}" var="connection">
-		        <tr>
-		        	<td>${connection.id}</td>
-		            <td>${connection.email}</td>
+		    </thead>
+		    <tbody>
+		    <tr th:if="${connection.empty}">
+		            <td colspan="2"> No Books Available </td>
 		        </tr>
-		        </c:forEach>
-    		</table>
+		        <tr th:each="connection : ${connection}">
+		            <td><span th:text="${connection.id}"> ID </span></td>
+		            <td><span th:text="${connection.user.email}"> Email </span></td>
+		        </tr>
+		    </tbody>
+		</table>
 
 		</div>
 	</div>
