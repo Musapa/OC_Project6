@@ -24,7 +24,7 @@ public class ConnectionController {
 
 	@Autowired
 	private ConnectionRepository connectionRepository;
-
+	
 	@Autowired
 	private UserRepository userRepository;
 
