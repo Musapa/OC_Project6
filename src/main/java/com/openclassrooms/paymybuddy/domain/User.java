@@ -33,6 +33,19 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
+	
+	public User() {
+		
+	}
+
+	public User(User user) {
+		super();
+		this.id = user.getId();
+		this.email = user.getEmail();
+		this.password = user.getPassword();
+		this.active = user.getActive();
+		this.roles = user.getRoles();
+	}
 
 	public Long getId() {
 		return id;

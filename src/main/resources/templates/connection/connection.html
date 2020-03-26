@@ -53,27 +53,40 @@
     			<li class="breadcrumb-item active" aria-current="page">Connections</li>
   			</ol>
 		</nav>
-		<div class="container col-md-6 mb-2">	
-			<h2>List of users.</h2>
 		
-		<table border="1" cellpadding="5">
-		    <thead>
-		        <tr>
-		            <th> ID </th>
-		            <th> Email </th>
-		        </tr>
-		    </thead>
-		    <tbody>
-		    <tr th:if="${connection.empty}">
-		            <td colspan="2"> No Books Available </td>
-		        </tr>
-		        <tr th:each="connection : ${connection}">
-		            <td><span th:text="${connection.id}"> ID </span></td>
-		            <td><span th:text="${connection.user.email}"> Email </span></td>
-		        </tr>
-		    </tbody>
-		</table>
-
+		<div class="container col-md-6 mb-2">	
+			
+			<h2>List of users.</h2>
+			
+			<form action="#" th:action="@{/home/connection/}" method="post">		
+				<table class="table">
+					<thead>
+						<tr>
+							<th> Check </th>
+							<th> ID </th>
+							<th> Email </th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:if="${users.empty}">
+							<td> No Connections Available </td>
+						</tr>
+						<tr th:each="user, count : ${users}">
+							<td>
+								<input type="checkbox" th:name="|users[${count.index}].selected|" th:value="${user.getSelected()}" th:checked="${user.selected}" />
+            				</td>
+						 	<td>
+								<input type="text" th:name="|users[${count.index}].id|" th:value="${user.getId()}"/>
+							</td>
+							<td>
+								<input type="text" th:name="|users[${count.index}].email|" th:value="${user.getEmail()}"/>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+	            	<input class="btn btn-primary" type="submit" value="Save connections" />
+			</form>
+			
 		</div>
 	</div>
 </body>

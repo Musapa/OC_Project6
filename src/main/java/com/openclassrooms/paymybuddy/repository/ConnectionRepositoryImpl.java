@@ -8,7 +8,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
-import com.openclassrooms.paymybuddy.domain.Connection;
+import com.openclassrooms.paymybuddy.domain.User;
 
 @Repository	
 public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
@@ -16,8 +16,8 @@ public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
 	@PersistenceContext
 	EntityManager entityManager;
     @Override
-    public List<Connection> findConnection(Long id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM connection WHERE connection_id = ?", Connection.class);
+    public List<User> findUnconnectedUsers(Long id) {
+        Query query = entityManager.createNativeQuery("SELECT * FROM USER WHERE id NOT IN (SELECT CONNECTION_ID FROM CONNECTION) AND id != ?", User.class);
         query.setParameter(1, id);
         return query.getResultList();
     }
