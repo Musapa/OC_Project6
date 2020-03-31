@@ -17,7 +17,7 @@ public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
 	EntityManager entityManager;
     @Override
     public List<User> findUnconnectedUsers(Long id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM USER WHERE id NOT IN (SELECT CONNECTION_ID FROM CONNECTION) AND id != ?", User.class);
+        Query query = entityManager.createNativeQuery("SELECT * FROM USER WHERE id NOT IN (SELECT USER_ID FROM CONNECTION) AND id != ?", User.class);
         query.setParameter(1, id);
         return query.getResultList();
     }

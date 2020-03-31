@@ -53,18 +53,16 @@
     			<li class="breadcrumb-item active" aria-current="page">Connections</li>
   			</ol>
 		</nav>
+		<h4 class="text-center mt-2 mb-4">List of users to connect</h4>
 		
-		<div class="container col-md-6 mb-2">	
-			
-			<h2>List of users.</h2>
-			
+		<div class="container col-md-7 mb-2">	
 			<form action="#" th:action="@{/home/connection/}" method="post">		
-				<table class="table">
+				<table class="table table-bordered">
 					<thead>
-						<tr>
-							<th> Check </th>
-							<th> ID </th>
-							<th> Email </th>
+						<tr class="table-success">
+							<th class="text-center"> # </th>
+							<th class="text-center"> ID </th>
+							<th class="text-center"> Email </th>
 						</tr>
 					</thead>
 					<tbody>
@@ -73,21 +71,24 @@
 						</tr>
 						<tr th:each="user, count : ${users}">
 							<td>
-								<input type="checkbox" th:name="|users[${count.index}].selected|" th:value="${user.getSelected()}" th:checked="${user.selected}" />
+								<input class="text-center" type="checkbox" th:name="|users[${count.index}].selected|" th:checked="${user.selected}" />
             				</td>
 						 	<td>
-								<input type="text" th:name="|users[${count.index}].id|" th:value="${user.getId()}"/>
+								<input class="border-0 text-center" type="text" readonly th:name="|users[${count.index}].id|" th:value="${user.getId()}"/>
 							</td>
 							<td>
-								<input type="text" th:name="|users[${count.index}].email|" th:value="${user.getEmail()}"/>
+								<input class="border-0 text-center" type="text" readonly th:name="|users[${count.index}].email|" th:value="${user.getEmail()}"/>
 							</td>
 						</tr>
 					</tbody>
-				</table>
-	            	<input class="btn btn-primary" type="submit" value="Save connections" />
+				</table>				
 			</form>
-			
+			<div class="col-md-12"> 
+				<input class="btn btn-success btn-block" type="submit" value="Save connections" />
+	            <a class="btn btn-success btn-block" href="/home/transaction" role="button">Cancel</a>
+	            </div>
 		</div>
+		
 	</div>
 </body>
 </html>

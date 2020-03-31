@@ -69,12 +69,16 @@ public class ConnectionController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		User thisUser = userService.findUserByEmail(authentication.getName());
-		for (UserSelectDto user : form.getUsers()) {
-			if (user.getSelected()) {
-				connectionService.saveConnection(new Connection(thisUser.getId(), user));
+		if (form.getUsers() != null) {
+			for (UserSelectDto user : form.getUsers()) {
+				if (user.getSelected()) {
+					connectionService.saveConnection(new Connection(thisUser.getId(), user));
+				}
 			}
+			return "redirect:/home/transaction/";
+		} else {
+			return "redirect:/home/connection/";
 		}
-		return "redirect:/home/transaction/";
 	}
 
 }
