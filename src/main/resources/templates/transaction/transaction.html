@@ -73,15 +73,14 @@
 							<tr th:if="${users.empty}">
 								<td colspan="2"> No Connections Available </td>
 							</tr>
-							<tr th:each="users : ${user}">
-								<td><span th:text="${user.id()}"> Id </span></td>
-								<td><span th:text="${user.email()}"> Email </span></td>
+							<tr th:each="user : ${users}">
+								<td><span th:text="${user.id}"> Id </span></td>
+								<td><span th:text="${user.email}"> Email </span></td>
 							</tr>
 						</tbody>
 					</table>
 			</form>
-		</div>
-			 																			
+		</div>																			
 	</div>
 </body>
 </html>
