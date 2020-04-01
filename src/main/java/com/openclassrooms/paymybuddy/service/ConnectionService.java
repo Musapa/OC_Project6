@@ -9,6 +9,8 @@ public interface ConnectionService {
 
 	List<User> findUnconnectedUsers(Long id);
 	
+	List<User> findConnectedUsers(Long id);
+	
 	void saveConnection(Connection connection);
 
 }

@@ -19,14 +19,17 @@ public class Connection {
 
 	@OneToOne
 	private User user;
+	
+	@OneToOne
+	private User owner;
 
 	public Connection() {
 	}
 	
-	public Connection(Long id, User user) {
+	public Connection(User user, User owner) {
 		super();
-		this.id = id;
 		this.user = user;
+		this.owner = owner;
 	}
 	
 	public Long getId() {
@@ -43,6 +46,14 @@ public class Connection {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 }

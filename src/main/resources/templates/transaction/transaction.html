@@ -9,9 +9,10 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
+	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css">
 </head>
@@ -59,27 +60,27 @@
 			<a class="btn btn-success btn-lg btn-block font-weight-light " href="/home/connection" role="button">Add Connection</a>
 		</div>
 		
-		
-		<form action="#" th:action="@{/home/transaction/}" method="get">	
-			<div class="col-md-6">
-				<table class="table">
-					<thead>
-						<tr>
-							<th> Id </th>
-							<th> Email </th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:if="${users.empty}">
-							<td colspan="2"> No Connections Available </td>
-						</tr>
-						<tr th:each="users : ${user}">
-							<td><span th:text="${user.id()}"> Id </span></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</form>	
+		<div class="container col-md-6 mb-2">	
+			<form action="#" th:action="@{/home/transaction/}" method="post">	
+					<table class="table">
+						<thead>
+							<tr>
+								<th class="text-center"> Id </th>
+								<th class="text-center"> Email </th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:if="${users.empty}">
+								<td colspan="2"> No Connections Available </td>
+							</tr>
+							<tr th:each="users : ${user}">
+								<td><span th:text="${user.id()}"> Id </span></td>
+								<td><span th:text="${user.email()}"> Email </span></td>
+							</tr>
+						</tbody>
+					</table>
+			</form>
+		</div>
 			 																			
 	</div>
 </body>

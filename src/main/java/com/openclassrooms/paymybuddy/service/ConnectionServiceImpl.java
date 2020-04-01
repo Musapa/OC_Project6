@@ -20,6 +20,10 @@ public class ConnectionServiceImpl implements ConnectionService {
 	public List<User> findUnconnectedUsers(Long id){
 		return connectionRepository.findUnconnectedUsers(id);
 	}
+	@Override
+	public List<User> findConnectedUsers(Long id){
+		return connectionRepository.findConnectedUsers(id);
+	}
 	
 	@Override
     public void saveConnection(Connection connection) {

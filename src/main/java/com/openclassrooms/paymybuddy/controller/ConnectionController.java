@@ -72,7 +72,7 @@ public class ConnectionController {
 		if (form.getUsers() != null) {
 			for (UserSelectDto user : form.getUsers()) {
 				if (user.getSelected()) {
-					connectionService.saveConnection(new Connection(thisUser.getId(), user));
+					connectionService.saveConnection(new Connection(user, thisUser));
 				}
 			}
 			return "redirect:/home/transaction/";
