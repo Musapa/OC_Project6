@@ -17,16 +17,16 @@ public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
 	EntityManager entityManager;
     @Override
     public List<User> findUnconnectedUsers(Long id) {
-        Query query = entityManager.createNativeQuery("SELECT * FROM USER WHERE id NOT IN (SELECT USER_ID FROM CONNECTION WHERE OWNER_ID = ?) AND id != ?", User.class);
+        Query query = entityManager.createNativeQuery("SELECT * FROM user WHERE id NOT IN (SELECT user_id FROM connection) AND id != ?", User.class);
         query.setParameter(1, id);
-        query.setParameter(2, id);
+        /*query.setParameter(2, id);*/
         return query.getResultList();
     }
     
     @Override
 	public List<User> findConnectedUsers(Long id){
-        Query query = entityManager.createNativeQuery("SELECT * FROM USER WHERE id IN (SELECT USER_ID FROM CONNECTION WHERE OWNER_ID = ?)", User.class);
-        query.setParameter(1, id);
+        Query query = entityManager.createNativeQuery("SELECT * FROM user WHERE id IN (SELECT user_id FROM connection)", User.class);
+        /*query.setParameter(1, id);*/
         return query.getResultList();
     }
 }

@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,17 +21,18 @@ public class Connection {
 
 	@OneToOne
 	private User user;
-	
-	@OneToOne
-	private User owner;
+		
+	@ManyToOne
+	@JoinColumn(name = "account_id", nullable = false)
+	private Account account;
 
 	public Connection() {
 	}
 	
-	public Connection(User user, User owner) {
+	public Connection(User user, Account account) {
 		super();
 		this.user = user;
-		this.owner = owner;
+		this.account = account;
 	}
 	
 	public Long getId() {
@@ -48,12 +51,12 @@ public class Connection {
 		this.user = user;
 	}
 
-	public User getOwner() {
-		return owner;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setOwner(User owner) {
-		this.owner = owner;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 }

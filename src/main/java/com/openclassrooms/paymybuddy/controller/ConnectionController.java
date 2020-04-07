@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.dto.ConnectionDto;
@@ -56,8 +57,8 @@ public class ConnectionController {
 		model.setViewName("connection/connection");
 
 		return model;
-	}
-
+	}	
+	
 	@RequestMapping(value = { "home/connection" }, method = RequestMethod.POST)
 	public String addConnection(@Valid @ModelAttribute ConnectionDto form, Model model, BindingResult result) {
 
@@ -72,7 +73,7 @@ public class ConnectionController {
 		if (form.getUsers() != null) {
 			for (UserSelectDto user : form.getUsers()) {
 				if (user.getSelected()) {
-					connectionService.saveConnection(new Connection(user, thisUser));
+					connectionService.saveConnection(new Connection(user,thisUser));
 				}
 			}
 			return "redirect:/home/transaction/";

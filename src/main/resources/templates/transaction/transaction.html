@@ -36,7 +36,7 @@
 						<a class="nav-link active" href="/home/transaction">Transaction<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Profile</a>
+						<a class="nav-link" href="#">Account</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Contact</a>
@@ -55,32 +55,55 @@
   			</ol>
 		</nav>
 		
-		<div class="container col-md-6 mb-2">	
-			<h3 class="text-center mt-5 mb-3 font-weight-bold">SEND MONEY</h3>
-			<a class="btn btn-success btn-lg btn-block font-weight-light " href="/home/connection" role="button">Add Connection</a>
+		<div class="container col-md-10 mb-3">
+			<div class="row">
+				<div class="col-md-6 text-left">	
+					<p class="font-weight-bold">Send Money</p>
+				</div>
+				<div class="col-md-6 text-right">	
+					<a class="btn btn-primary btn-sm font-weight-normal" href="/home/connection" role="button">Add Connection</a>
+				</div>
+			</div>
 		</div>
 		
-		<div class="container col-md-6 mb-2">	
-			<form action="#" th:action="@{/home/transaction/}" method="post">	
-					<table class="table">
-						<thead>
-							<tr>
-								<th class="text-center"> Id </th>
-								<th class="text-center"> Email </th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:if="${users.empty}">
-								<td colspan="2"> No Connections Available </td>
-							</tr>
-							<tr th:each="user : ${users}">
-								<td><span th:text="${user.id}"> Id </span></td>
-								<td><span th:text="${user.email}"> Email </span></td>
-							</tr>
-						</tbody>
-					</table>
-			</form>
-		</div>																			
+		
+			<div class="container col-md-8 mb-5">
+				<form action="#" th:action="@{/home/transaction/}" method="post">
+					<div class="row">
+							<div class="col-md-6">		
+								<div th:object="${user}">
+					    			<select class="form-control" id="userOrder" name="userOrder">
+					        			<option value="" style="font-weight: bold;">Select A Connection</option>
+					        			<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.email}"></option>
+					    			</select>
+								</div>
+							</div>
+							<div class="col-md-3">
+	                			<input type="number" min="0" step="10" class="form-control text-right" th:field="*{users}" placeholder="0€ "/>
+	 						</div>
+							<div class="col-md-3">	
+								<a class="btn btn-success btn-block font-weight-normal" href="#" role="button">Pay</a>
+							</div>
+					</div>
+				</form>
+			</div>
+
+			<div class="container col-md-10">
+				<div class="text-left">	
+					<p class="font-weight-normal">My Transactions</p>
+				</div>
+					
+				<table class="table">
+					<thead>
+						<tr class="bg-success text-light">
+							<th class="text-center font-weight-normal" style="width: 33.33%">Connections</th>
+							<th class="text-center font-weight-normal" style="width: 33.33%">Description</th>
+							<th class="text-center font-weight-normal" style="width: 33.33%">Amount</th>
+						</tr>
+					</thead>
+				</table>				
+		</div>
+																				
 	</div>
 </body>
 </html>

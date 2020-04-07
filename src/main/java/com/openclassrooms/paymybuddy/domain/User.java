@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,21 +22,25 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(name = "email", nullable=false)
+	@Column(name = "email", nullable = false)
 	private String email;
 
-	@Column(name = "password", nullable=false)
+	@Column(name = "password", nullable = false)
 	private String password;
 
-	@Column(name = "active", nullable=false)
+	@Column(name = "active", nullable = false)
 	private boolean active;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
-	
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "account_id", referencedColumnName = "account_id")
+	private Account account;
+
 	public User() {
-		
+
 	}
 
 	public User(User user) {
@@ -45,6 +50,7 @@ public class User {
 		this.password = user.getPassword();
 		this.active = user.getActive();
 		this.roles = user.getRoles();
+		this.account = user.getAccount();
 	}
 
 	public Long getId() {
@@ -85,6 +91,14 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 }

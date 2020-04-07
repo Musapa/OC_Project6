@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,23 +19,30 @@ public class Transaction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "transaction_id")
 	private Long id;
-	
-	@Column(name = "amount", nullable=false)
+
+	@Column(name = "amount", nullable = false)
 	private BigDecimal amount;
-	
-	@Column(name = "fee", nullable=false)
+
+	@Column(name = "fee", nullable = false)
 	private BigDecimal fee;
-	
-	@Column(name = "description", nullable=false)
+
+	@Column(name = "description", nullable = false)
 	private String description;
-	
-	
-	public Transaction(Long id, BigDecimal amount, BigDecimal fee, String description) {
+
+	@ManyToOne
+	@JoinColumn(name = "account_id", nullable = false)
+	private Account account;
+
+	public Transaction() {
+	}
+
+	public Transaction(Long id, BigDecimal amount, BigDecimal fee, String description, Account account) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.fee = fee;
 		this.description = description;
+		this.account = account;
 	}
 
 	public Long getId() {
@@ -67,5 +76,13 @@ public class Transaction {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public Account getAccount() {
+		return account;
+	}
+
+	public void setAccount(Account account) {
+		this.account = account;
+	}
+
 }
