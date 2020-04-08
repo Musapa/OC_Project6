@@ -40,7 +40,6 @@ public class User {
 	private Account account;
 
 	public User() {
-
 	}
 
 	public User(User user) {

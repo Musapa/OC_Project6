@@ -41,7 +41,7 @@ public class TransactionController {
 		log.info("Get Name: " + authentication.getName());
 
 		User currentUser = userService.findUserByEmail(authentication.getName());
-		List<User> users = connectionService.findConnectedUsers(currentUser.getId());
+		List<User> users = connectionService.findConnectedUsers(currentUser);
 	
 		model.addObject("users", users);
 		model.setViewName("transaction/transaction");

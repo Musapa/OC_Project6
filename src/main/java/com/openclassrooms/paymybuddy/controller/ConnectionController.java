@@ -44,7 +44,7 @@ public class ConnectionController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		User currentUser = userService.findUserByEmail(authentication.getName());
-		List<User> users = connectionService.findUnconnectedUsers(currentUser.getId());
+		List<User> users = connectionService.findUnconnectedUsers(currentUser);
 		List<UserSelectDto> selectedUsers = new ArrayList<>();
 
 		for (User user : users) {
@@ -73,7 +73,10 @@ public class ConnectionController {
 		if (form.getUsers() != null) {
 			for (UserSelectDto user : form.getUsers()) {
 				if (user.getSelected()) {
-					connectionService.saveConnection(new Connection(user,thisUser));
+					Connection connection = new Connection(user,thisUser.getAccount());
+					thisUser.getAccount().getConnections().add(connection);
+					userService.saveUser(thisUser);
+					connectionService.saveConnection(connection);
 				}
 			}
 			return "redirect:/home/transaction/";

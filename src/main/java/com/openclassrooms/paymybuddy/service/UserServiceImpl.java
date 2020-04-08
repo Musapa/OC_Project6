@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Role;
 import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.repository.RoleRepository;
@@ -20,6 +21,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,6 +39,7 @@ public class UserServiceImpl implements UserService {
 		user.setActive(true);
 		Role userRole = roleRepository.findByRole("ADMIN");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+		user.setAccount(new Account(user));
 		userRepository.save(user);
 	}
 

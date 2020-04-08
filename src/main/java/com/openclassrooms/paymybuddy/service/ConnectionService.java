@@ -7,9 +7,9 @@ import com.openclassrooms.paymybuddy.domain.User;
 
 public interface ConnectionService {
 
-	List<User> findUnconnectedUsers(Long id);
+	List<User> findUnconnectedUsers(User user);
 	
-	List<User> findConnectedUsers(Long id);
+	List<User> findConnectedUsers(User user);
 	
 	void saveConnection(Connection connection);
 

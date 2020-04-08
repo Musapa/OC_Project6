@@ -17,12 +17,12 @@ public class ConnectionServiceImpl implements ConnectionService {
 
 	
 	@Override
-	public List<User> findUnconnectedUsers(Long id){
-		return connectionRepository.findUnconnectedUsers(id);
+	public List<User> findUnconnectedUsers(User user){
+		return connectionRepository.findUnconnectedUsers(user);
 	}
 	@Override
-	public List<User> findConnectedUsers(Long id){
-		return connectionRepository.findConnectedUsers(id);
+	public List<User> findConnectedUsers(User user){
+		return connectionRepository.findConnectedUsers(user);
 	}
 	
 	@Override

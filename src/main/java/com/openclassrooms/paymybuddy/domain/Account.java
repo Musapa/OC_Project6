@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.domain;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -33,12 +34,17 @@ public class Account {
 	@OneToMany(mappedBy = "account")
 	private Set<Connection> connections;
 
-	public Account(Long id, BigDecimal balance, User user, Set<Transaction> transactions, Set<Connection> connections) {
-		this.id = id;
-		this.balance = balance;
+	public Account() {
+		balance = new BigDecimal(0);
+		transactions = new HashSet<>();
+		connections = new HashSet<>();
+	}
+	
+	public Account(User user) {
 		this.user = user;
-		this.transactions = transactions;
-		this.connections = connections;
+		balance = new BigDecimal(0);
+		transactions = new HashSet<>();
+		connections = new HashSet<>();
 	}
 
 	public void withdraw() {
