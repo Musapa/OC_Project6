@@ -36,7 +36,7 @@
 						<a class="nav-link active" href="/home/transaction">Transaction<span class="sr-only">(current)</span></a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Account</a>
+						<a class="nav-link" href="/home/account">Account</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Contact</a>
@@ -70,7 +70,7 @@
 			<div class="container col-md-8 mb-5">
 				<form action="#" th:action="@{/home/transaction/}" method="post">
 					<div class="row">
-							<div class="col-md-6">		
+							<div class="col-md-3">		
 								<div th:object="${user}">
 					    			<select class="form-control" id="userOrder" name="userOrder">
 					        			<option value="" style="font-weight: bold;">Select A Connection</option>
@@ -78,6 +78,9 @@
 					    			</select>
 								</div>
 							</div>
+							<div class="col-md-3">
+	                			<input type="text" class="form-control text-right" placeholder="description"/>
+	 						</div>
 							<div class="col-md-3">
 	                			<input type="number" min="0" step="10" class="form-control text-right" th:field="*{users}" placeholder="0€ "/>
 	 						</div>

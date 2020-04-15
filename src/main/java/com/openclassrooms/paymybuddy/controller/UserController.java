@@ -53,7 +53,7 @@ public class UserController {
 		if (bindingResult.hasErrors()) {
 			model.setViewName("user/signup");
 		} else {
-			userService.saveUser(user);
+			userService.createUser(user);
 			model.addObject("msg", "User has been registred!");
 			model.addObject("user", new User());
 			model.setViewName("user/signup");

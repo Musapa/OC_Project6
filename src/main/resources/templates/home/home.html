@@ -35,7 +35,7 @@
 						<a class="nav-link" href="/home/transaction">Transaction</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Account</a>
+						<a class="nav-link" href="/home/account">Account</a>
 					</li>
 					<li class="nav-item">
 						<a class="nav-link" href="#">Contact</a>
@@ -50,11 +50,35 @@
   			<ol class="breadcrumb">
     			<li class="breadcrumb-item active" aria-current="page">Home</li>
   			</ol>
-		</nav>
-		<h2>
-			Hi <span th:utext="${email}"></span>, this is the home page.
-		</h2>
+		</nav>		
+				
+		<div class="container col-md-6 mb-2">
+		<img
+			src="https://user.oc-static.com/upload/2019/11/04/15728814356333_image1.png"
+			class="img-fluid" alt="Responsive image">
+		</div>
 		
+		<h4 class="text-center mt-3 mb-5" style="color: #2ea5df;">
+			Welcome <span th:utext="${email}" style="font-weight: 700; text-decoration: underline; font-style: oblique;"></span>, to PayMyBuddy application.
+		</h4>
+		
+		<h5 class="text-center mt-4 mb-3" style="font-weight: 700; background-color: #55c555; color: #FFFFFF; padding: 7px;">Money transfer application</h5>
+
+		<ul class="a">
+		  <li>A web app should be created for the product.</li>
+		  <li>New users must be able to register using unique email id.</li>
+		  <li>Users should be able to login based on their accounts in the database.</li>
+		  <li>After login, users can add people to their lists by using their email (if the person already exists in the database).</li>
+		  <li>A user can load money into their account on our application.</li>
+		  <li>From the balance available, they can make payments to any other user registered with the application.</li>
+		  <li>At any point, users can transfer the money in their accounts, back into their bank.</li>
+		  <li>For each transaction, we charge a small fee of 0.5% to generate revenue for the company.</li>
+		</ul>
+
+		<style>
+		ul.a {list-style-type: circle;}
+		</style>
+
 	</div>
 </body>
 </html>
