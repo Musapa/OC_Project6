@@ -68,7 +68,7 @@
 		
 		
 			<div class="container col-md-8 mb-5">
-				<form action="#" th:action="@{/home/transaction/}" method="post">
+				<form action="#" th:action="@{/home/transaction/pay/}" method="post">
 					<div class="row">
 							<div class="col-md-3">		
 								<div th:object="${user}">
@@ -85,8 +85,11 @@
 	                			<input type="number" min="0" step="10" class="form-control text-right" th:field="*{users}" placeholder="0€ "/>
 	 						</div>
 							<div class="col-md-3">	
-								<a class="btn btn-success btn-block font-weight-normal" href="#" role="button">Pay</a>
+								<button type="submit" class="btn btn-lg btn-success btn-block">
+								<i class="fa fa-user-plus"></i> Pay
+								</button>
 							</div>
+
 					</div>
 				</form>
 			</div>
