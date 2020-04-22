@@ -36,7 +36,6 @@ public class User {
 	private Set<Role> roles;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "account_id", referencedColumnName = "account_id")
 	private Account account;
 
 	public User() {

@@ -25,9 +25,6 @@ public class Account {
 	@Column(name = "balance", nullable = false)
 	private BigDecimal balance;
 
-	@OneToOne(mappedBy = "account")
-	private User user;
-
 	@OneToMany(mappedBy = "account")
 	private Set<Transaction> transactions;
 	
@@ -41,7 +38,6 @@ public class Account {
 	}
 	
 	public Account(User user) {
-		this.user = user;
 		balance = new BigDecimal(100.00);
 		transactions = new HashSet<>();
 		connections = new HashSet<>();
@@ -69,14 +65,6 @@ public class Account {
 
 	public void setBalance(BigDecimal balance) {
 		this.balance = balance;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
 	}
 
 	public Set<Transaction> getTransactions() {

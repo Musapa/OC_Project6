@@ -30,9 +30,9 @@ public class Transaction {
 	@Column(name = "description", nullable = false)
 	private String description;
 	
-	/*@OneToOne
+	@OneToOne
 	@Column(name = "recipient", nullable = false)
-	private User recipient;*/
+	private User recipient;
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", nullable = false)
@@ -41,12 +41,13 @@ public class Transaction {
 	public Transaction() {
 	}
 
-	public Transaction(Long id, BigDecimal amount, BigDecimal fee, String description, Account account) {
+	public Transaction(Long id, BigDecimal amount, BigDecimal fee, String description, User recipient, Account account) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.fee = fee;
 		this.description = description;
+		/*this.recipient = recipient;*/
 		this.account = account;
 	}
 
@@ -80,6 +81,14 @@ public class Transaction {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public User getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(User recipient) {
+		this.recipient = recipient;
 	}
 
 	public Account getAccount() {
