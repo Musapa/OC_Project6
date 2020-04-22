@@ -68,28 +68,32 @@
 		
 		
 			<div class="container col-md-8 mb-5">
-				<form action="#" th:action="@{/home/transaction/pay/}" method="post">
+				<form action="#" th:object="${payment}" th:action="@{/home/transaction/pay/}" method="post">
+	
 					<div class="row">
-							<div class="col-md-3">		
-								<div th:object="${user}">
-					    			<select class="form-control" id="userOrder" name="userOrder">
-					        			<option value="" style="font-weight: bold;">Select A Connection</option>
-					        			<option th:each="user : ${users}" th:value="${user.id}" th:text="${user.email}"></option>
-					    			</select>
-								</div>
-							</div>
-							<div class="col-md-3">
-	                			<input type="text" class="form-control text-right" placeholder="description"/>
-	 						</div>
-							<div class="col-md-3">
-	                			<input type="number" min="0" step="10" class="form-control text-right" th:field="*{users}" placeholder="0€ "/>
-	 						</div>
-							<div class="col-md-3">	
-								<button type="submit" class="btn btn-lg btn-success btn-block">
+						<div class="form-group col-md-6">	
+							<label for="exampleFormControlSelect1">Select A Connection</label>
+							<select class="form-control" name="connection">
+								<option value="" style="font-weight: bold;"> Connections </option>
+							    <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.email}"></option>
+							</select>
+						</div>
+						
+						<div class="form-group col-md-6">	
+							<label for="exampleFormControlTextarea1">Amount</label>
+							<input type="number" min="0" step="10" class="form-control" th:field="*{amount}" placeholder="0€ "/>
+						</div>	
+						
+						<div class="form-group col-md-12">	
+							<label for="exampleFormControlTextarea1">Description</label>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="2" th:field="*{description}" placeholder="Write a description ..."></textarea>
+						</div>					
+					
+	 					<div class="col-md-12">	
+							<button type="submit" class="btn btn-success btn-block ">
 								<i class="fa fa-user-plus"></i> Pay
-								</button>
-							</div>
-
+							</button>
+						</div>
 					</div>
 				</form>
 			</div>

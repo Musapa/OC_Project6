@@ -42,7 +42,7 @@ public class Account {
 	
 	public Account(User user) {
 		this.user = user;
-		balance = new BigDecimal(0);
+		balance = new BigDecimal(100.00);
 		transactions = new HashSet<>();
 		connections = new HashSet<>();
 	}

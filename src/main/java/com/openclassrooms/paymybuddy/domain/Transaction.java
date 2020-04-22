@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -28,6 +29,10 @@ public class Transaction {
 
 	@Column(name = "description", nullable = false)
 	private String description;
+	
+	/*@OneToOne
+	@Column(name = "recipient", nullable = false)
+	private User recipient;*/
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", nullable = false)

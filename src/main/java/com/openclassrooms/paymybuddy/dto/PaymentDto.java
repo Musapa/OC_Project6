@@ -2,21 +2,18 @@ package com.openclassrooms.paymybuddy.dto;
 
 import java.math.BigDecimal;
 
-import com.openclassrooms.paymybuddy.domain.User;
+public class PaymentDto {
 
-public class PaymentDto extends User {
-
-	private BigDecimal ammount;
+	private BigDecimal amount;
 	private String description;
 	private String connection;
 	
 	
-	
-	public BigDecimal getAmmount() {
-		return ammount;
+	public BigDecimal getAmount() {
+		return amount;
 	}
-	public void setAmmount(BigDecimal ammount) {
-		this.ammount = ammount;
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 	public String getDescription() {
 		return description;

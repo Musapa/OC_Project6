@@ -44,6 +44,8 @@ public class TransactionController {
 	@RequestMapping(value = { "home/transaction" }, method = RequestMethod.GET)
 	public ModelAndView getTransaction() {
 		ModelAndView model = new ModelAndView();
+		
+		//add balnce !< 0 on user nešto
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("Get Name: " + authentication.getName());
@@ -52,6 +54,7 @@ public class TransactionController {
 		List<User> users = connectionService.findConnectedUsers(currentUser);
 	
 		model.addObject("users", users);
+		model.addObject("payment", new PaymentDto());
 		model.setViewName("transaction/transaction");
 		return model;
 	}
@@ -67,7 +70,14 @@ public class TransactionController {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		User thisUser = userService.findUserByEmail(authentication.getName());
+		
+		//get connection id, search for connection where user 
+		// search user field
+		
+		//find connection crate new transaction
 	
+		
+		
 		return "redirect:/home/transaction/";
 	}
 }
