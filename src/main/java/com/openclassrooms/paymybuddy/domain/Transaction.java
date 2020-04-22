@@ -31,7 +31,6 @@ public class Transaction {
 	private String description;
 	
 	@OneToOne
-	@Column(name = "recipient", nullable = false)
 	private User recipient;
 
 	@ManyToOne
@@ -47,7 +46,7 @@ public class Transaction {
 		this.amount = amount;
 		this.fee = fee;
 		this.description = description;
-		/*this.recipient = recipient;*/
+		this.recipient = recipient;
 		this.account = account;
 	}
 
