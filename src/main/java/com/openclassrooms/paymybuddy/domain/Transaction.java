@@ -40,9 +40,8 @@ public class Transaction {
 	public Transaction() {
 	}
 
-	public Transaction(Long id, BigDecimal amount, BigDecimal fee, String description, User recipient, Account account) {
+	public Transaction(BigDecimal amount, BigDecimal fee, String description, User recipient, Account account) {
 		super();
-		this.id = id;
 		this.amount = amount;
 		this.fee = fee;
 		this.description = description;

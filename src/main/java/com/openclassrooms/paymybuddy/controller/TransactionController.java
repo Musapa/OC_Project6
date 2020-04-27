@@ -1,7 +1,9 @@
 package com.openclassrooms.paymybuddy.controller;
 
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -18,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.openclassrooms.paymybuddy.domain.Connection;
+import com.openclassrooms.paymybuddy.domain.Transaction;
 import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.dto.PaymentDto;
-import com.openclassrooms.paymybuddy.dto.UserSelectDto;
 import com.openclassrooms.paymybuddy.service.ConnectionService;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
@@ -42,21 +43,33 @@ public class TransactionController {
 	private ConnectionService connectionService;
 	
 	@RequestMapping(value = { "home/transaction" }, method = RequestMethod.GET)
-	public ModelAndView getTransaction() {
+	public ModelAndView getTransaction(BindingResult bindingResult, PaymentDto form) {
 		ModelAndView model = new ModelAndView();
-		
-		//add balnce !< 0 on user nešto
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("Get Name: " + authentication.getName());
 
 		User currentUser = userService.findUserByEmail(authentication.getName());
 		List<User> users = connectionService.findConnectedUsers(currentUser);
-	
+		
+		//TODO transaction service find transaction like in user
+		//TODO check the amount not exceed amount on account and put error on html if there is
+		
+		List<Transaction> transactions = transactionService.findTransactions(currentUser);
+		BigDecimal amount = form.getAmount();
+		
+		if (amount.compareTo(amount) <= 0) {
+			bindingResult.rejectValue("transaction", "error.transaction", "Insufficient funds.");
+		}
+		if (bindingResult.hasErrors()) {
+			model.setViewName("transaction/transaction");
+		} else {	
 		model.addObject("users", users);
+		model.addObject("transaction", transactions);
 		model.addObject("payment", new PaymentDto());
 		model.setViewName("transaction/transaction");
-		return model;
+		}
+		return model;	
 	}
 	
 	@RequestMapping(value = {"home/transaction/pay"}, method = RequestMethod.POST)
@@ -71,11 +84,13 @@ public class TransactionController {
 
 		User thisUser = userService.findUserByEmail(authentication.getName());
 		
-		//get connection id, search for connection where user 
-		// search user field
+		BigDecimal amount = form.getAmount();
+		BigDecimal feeRate = new BigDecimal("0.5");
+		BigDecimal fee = amount.multiply(feeRate).divide(new BigDecimal(100));
+		Optional<User> recipient = userService.findById(new Long(form.getConnection()));
+		Transaction transaction = new Transaction(amount, fee, form.getDescription(), recipient.get(), thisUser.getAccount());
 		
-		//find connection crate new transaction
-	
+		transactionService.save(transaction);
 		
 		
 		return "redirect:/home/transaction/";
