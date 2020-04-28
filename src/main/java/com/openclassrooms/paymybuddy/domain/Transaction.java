@@ -31,7 +31,7 @@ public class Transaction {
 	private String description;
 	
 	@OneToOne
-	private User recipient;
+	private Connection recipient;
 
 	@ManyToOne
 	@JoinColumn(name = "account_id", nullable = false)
@@ -40,7 +40,7 @@ public class Transaction {
 	public Transaction() {
 	}
 
-	public Transaction(BigDecimal amount, BigDecimal fee, String description, User recipient, Account account) {
+	public Transaction(BigDecimal amount, BigDecimal fee, String description, Connection recipient, Account account) {
 		super();
 		this.amount = amount;
 		this.fee = fee;
@@ -81,11 +81,11 @@ public class Transaction {
 		this.description = description;
 	}
 
-	public User getRecipient() {
+	public Connection getRecipient() {
 		return recipient;
 	}
 
-	public void setRecipient(User recipient) {
+	public void setRecipient(Connection recipient) {
 		this.recipient = recipient;
 	}
 

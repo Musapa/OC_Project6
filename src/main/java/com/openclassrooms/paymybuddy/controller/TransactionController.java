@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.Transaction;
 import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.dto.PaymentDto;
@@ -52,10 +53,10 @@ public class TransactionController {
 		User currentUser = userService.findUserByEmail(authentication.getName());
 		List<User> users = connectionService.findConnectedUsers(currentUser);
 		
+		List<Transaction> transactions = transactionService.findTransactions(null);
+		
 		//TODO transaction service find transaction like in user
 		//TODO check the amount not exceed amount on account and put error on html if there is
-		
-		List<Transaction> transactions = transactionService.findTransactions(currentUser);
 		BigDecimal amount = form.getAmount();
 		
 		if (amount.compareTo(amount) <= 0) {
@@ -87,11 +88,10 @@ public class TransactionController {
 		BigDecimal amount = form.getAmount();
 		BigDecimal feeRate = new BigDecimal("0.5");
 		BigDecimal fee = amount.multiply(feeRate).divide(new BigDecimal(100));
-		Optional<User> recipient = userService.findById(new Long(form.getConnection()));
+		Optional<Connection> recipient = connectionService.findById(new Long(form.getConnection()));
 		Transaction transaction = new Transaction(amount, fee, form.getDescription(), recipient.get(), thisUser.getAccount());
 		
 		transactionService.save(transaction);
-		
 		
 		return "redirect:/home/transaction/";
 	}

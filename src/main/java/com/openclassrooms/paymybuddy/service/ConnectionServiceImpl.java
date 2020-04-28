@@ -1,6 +1,7 @@
 package com.openclassrooms.paymybuddy.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,11 @@ public class ConnectionServiceImpl implements ConnectionService {
     public void saveConnection(Connection connection) {
 		connectionRepository.save(connection);
     }
+	
+	@Override
+	public Optional<Connection> findById(Long id){
+		return connectionRepository.findById(id);
+	}
 	
 
 	
