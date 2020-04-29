@@ -1,5 +1,6 @@
 package com.openclassrooms.paymybuddy.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ public class TransactionServiceImpl implements TransactionService {
 	public void save(Transaction transaction) {
 		transactionRepository.save(transaction);
 	}
-	
+		
 	@Override
 	public List<Transaction> findTransactions(Account account){
-		return transactionRepository.findTransactions(account);
+		List<Long> ids = new ArrayList<>();
+		
+		ids.add(account.getId());
+		return transactionRepository.findAllById(ids);
 	}
 }
 

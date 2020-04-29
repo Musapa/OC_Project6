@@ -44,32 +44,21 @@ public class TransactionController {
 	private ConnectionService connectionService;
 	
 	@RequestMapping(value = { "home/transaction" }, method = RequestMethod.GET)
-	public ModelAndView getTransaction(BindingResult bindingResult, PaymentDto form) {
+	public ModelAndView getTransaction() {
 		ModelAndView model = new ModelAndView();
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		log.info("Get Name: " + authentication.getName());
 
 		User currentUser = userService.findUserByEmail(authentication.getName());
-		List<User> users = connectionService.findConnectedUsers(currentUser);
+		List<Connection> connections = connectionService.findConnectedUsers(currentUser);
 		
-		List<Transaction> transactions = transactionService.findTransactions(null);
+		List<Transaction> transactions = transactionService.findTransactions(currentUser.getAccount());
 		
-		//TODO transaction service find transaction like in user
-		//TODO check the amount not exceed amount on account and put error on html if there is
-		BigDecimal amount = form.getAmount();
-		
-		if (amount.compareTo(amount) <= 0) {
-			bindingResult.rejectValue("transaction", "error.transaction", "Insufficient funds.");
-		}
-		if (bindingResult.hasErrors()) {
-			model.setViewName("transaction/transaction");
-		} else {	
-		model.addObject("users", users);
-		model.addObject("transaction", transactions);
+		model.addObject("connections", connections);
+		model.addObject("transactions", transactions);
 		model.addObject("payment", new PaymentDto());
 		model.setViewName("transaction/transaction");
-		}
 		return model;	
 	}
 	

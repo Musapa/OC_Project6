@@ -10,7 +10,7 @@ public interface ConnectionService {
 
 	List<User> findUnconnectedUsers(User user);
 	
-	List<User> findConnectedUsers(User user);
+	List<Connection> findConnectedUsers(User user);
 	
 	void saveConnection(Connection connection);
 

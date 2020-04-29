@@ -8,6 +8,7 @@ import javax.persistence.Query;
 
 import org.springframework.stereotype.Repository;
 
+import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.User;
 
 @Repository	
@@ -24,8 +25,8 @@ public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
     }
     
     @Override
-	public List<User> findConnectedUsers(User user){
-        Query query = entityManager.createNativeQuery("SELECT * FROM user WHERE id IN (SELECT user_id FROM connection WHERE account_id =?)", User.class);
+    public List<Connection> findConnections(User user){
+        Query query = entityManager.createNativeQuery("SELECT * FROM connection WHERE account_id = ?", Connection.class);
         query.setParameter(1, user.getAccount().getId());
         return query.getResultList();
     }

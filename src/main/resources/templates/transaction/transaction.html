@@ -75,7 +75,7 @@
 							<label for="exampleFormControlSelect1">Select A Connection</label>
 							<select class="form-control" name="connection">
 								<option value="" style="font-weight: bold;"> Connections </option>
-							    <option th:each="user : ${users}" th:value="${user.id}" th:text="${user.email}"></option>
+							    <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.user.email}"></option>
 							</select>
 						</div>
 						
@@ -117,13 +117,16 @@
 						</tr>
 						<tr th:each="transaction, count : ${transactions}">
 						 	<td>
-								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].recipient|" th:value="${transaction.getRecipient()}"/>
+								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].recipient|" 
+								th:value="${transaction.getRecipient()}"/>
 							</td>
 						 	<td>
-								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].description|" th:value="${transaction.getDescription()}"/>
+								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].description|" 
+								th:value="${transaction.getDescription()}"/>
 							</td>
 							<td>
-								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].amount|" th:value="${transaction.getAmount()}"/>
+								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].amount|" 
+								th:value="${transaction.getAmount()}"/>
 							</td>
 						</tr>
 					</tbody>

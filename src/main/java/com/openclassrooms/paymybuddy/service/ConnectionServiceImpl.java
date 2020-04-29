@@ -22,8 +22,8 @@ public class ConnectionServiceImpl implements ConnectionService {
 		return connectionRepository.findUnconnectedUsers(user);
 	}
 	@Override
-	public List<User> findConnectedUsers(User user){
-		return connectionRepository.findConnectedUsers(user);
+	public List<Connection> findConnectedUsers(User user){
+		return connectionRepository.findConnections(user);
 	}
 	
 	@Override
