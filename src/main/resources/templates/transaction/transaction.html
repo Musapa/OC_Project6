@@ -9,7 +9,7 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	rel="stylesheet" id="bootstrap-css">
-	<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
@@ -19,121 +19,136 @@
 <body>
 	<div class="container col-md-6 mb-2">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			<a class="navbar-brand m-2 p-2 h1" style="background-color: #7dd076; color: #FFFFFF;">PayMyBuddy</a>
+			<a class="navbar-brand m-2 p-2 h1"
+				style="background-color: #7dd076; color: #FFFFFF;">PayMyBuddy</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
 				aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-	
-			<div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
+
+			<div class="collapse navbar-collapse w-100"
+				id="navbarSupportedContent">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-						<a class="nav-link" href="/home/home">Home</a>
+					<li class="nav-item"><a class="nav-link" href="/home/home">Home</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link active" href="/home/transaction">Transaction<span class="sr-only">(current)</span></a>
+					<li class="nav-item"><a class="nav-link active"
+						href="/home/transaction">Transaction<span class="sr-only">(current)</span></a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="/home/account">Account</a>
+					<li class="nav-item"><a class="nav-link" href="/home/account">Account</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" href="#">Contact</a>
+					<li class="nav-item"><a class="nav-link" href="#">Contact</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" th:href="@{/logout}">Sign out</a>
-					</li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/logout}">Sign
+							out</a></li>
 				</ul>
 			</div>
 		</nav>
-		
+
 		<nav aria-label="breadcrumb">
-  			<ol class="breadcrumb">
-    			<li class="breadcrumb-item"><a href="/home/home">Home</a></li>
-    			<li class="breadcrumb-item active" aria-current="page">Transaction</li>
-  			</ol>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/home/home">Home</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Transaction</li>
+			</ol>
 		</nav>
-		
+
 		<div class="container col-md-10 mb-3">
 			<div class="row">
-				<div class="col-md-6 text-left">	
+				<div class="col-md-6 text-left">
 					<p class="font-weight-bold">Send Money</p>
 				</div>
-				<div class="col-md-6 text-right">	
-					<a class="btn btn-primary btn-sm font-weight-normal" href="/home/connection" role="button">Add Connection</a>
+				<div class="col-md-6 text-right">
+					<a class="btn btn-primary btn-sm font-weight-normal"
+						href="/home/connection" role="button">Add Connection</a>
 				</div>
 			</div>
 		</div>
-		
-		
-			<div class="container col-md-8 mb-5">
-				<form action="#" th:object="${payment}" th:action="@{/home/transaction/pay/}" method="post">
-	
-					<div class="row">
-						<div class="form-group col-md-6">	
-							<label for="exampleFormControlSelect1">Select A Connection</label>
-							<select class="form-control" name="connection">
-								<option value="" style="font-weight: bold;"> Connections </option>
-							    <option th:each="connection : ${connections}" th:value="${connection.id}" th:text="${connection.user.email}"></option>
-							</select>
-						</div>
-						
-						<div class="form-group col-md-6">	
-							<label for="exampleFormControlTextarea1">Amount</label>
-							<input type="number" min="0" class="form-control" th:field="*{amount}" placeholder="0€ "/>
-						</div>	
-						
-						<div class="form-group col-md-12">	
-							<label for="exampleFormControlTextarea1">Description</label>
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="2" th:field="*{description}" placeholder="Write a description ..."></textarea>
-						</div>					
+
+
+		<div class="container col-md-8 mb-5">
+			<form class="form-horizontal" role="form" action="#" th:object="${payment}" th:action="@{/home/transaction/pay}" method="POST">
+				
+				<div class="row">
+					<div class="form-group col-md-6">
+						<label for="exampleFormControlSelect1">Select A Connection</label>
+						<select class="form-control" name="connection">
+							<option value="" style="font-weight: bold;">
+								Connections
+							</option>
+							<option th:each="connection : ${connections}"
+								th:value="${connection.id}" th:text="${connection.user.email}">
+							</option>
+						</select>
+					</div>
 					
-	 					<div class="col-md-12">	
-							<button type="submit" class="btn btn-success btn-block ">
-								<i class="fa fa-user-plus"></i> Pay
-							</button>
+					<div class="row">
+						<div class="form-group col-md-5">
+							<label for="exampleFormControlTextarea1">Amount</label> <input
+								type="number" min="0" class="form-control" id="amount" th:field="*{amount}"
+								placeholder="0€" required/>
+						</div>
+						<div class="col-md-7">
+							<div class="form-control-feedback">
+								<span class="text-danger align-middle"
+									th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
+								</span>
+							</div>
 						</div>
 					</div>
-				</form>
+					
+					<div class="form-group col-md-12">
+						<label for="exampleFormControlTextarea1">Description</label>
+						<textarea class="form-control" id="exampleFormControlTextarea1"
+							rows="2" th:field="*{description}"
+							placeholder="Write a description ..."></textarea>
+					</div>
+
+					<div class="col-md-12">
+						<button type="submit" class="btn btn-success btn-block ">
+							<i class="fa fa-user-plus"></i> Pay
+						</button>
+					</div>
+					
+				</div>
+			</form>
+		</div>
+
+		<div class="container col-md-10">
+			<div class="text-left">
+				<p class="font-weight-normal">My Transactions</p>
 			</div>
 
-			<div class="container col-md-10">
-				<div class="text-left">	
-					<p class="font-weight-normal">My Transactions</p>
-				</div>
-				
 			<table class="table">
-					<thead>
-						<tr class="bg-success text-light">
-							<th class="text-center font-weight-normal" style="width: 33.33%">Connections</th>
-							<th class="text-center font-weight-normal" style="width: 33.33%">Description</th>
-							<th class="text-center font-weight-normal" style="width: 33.33%">Amount</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:if="${transactions.empty}">
-							<td> No transactions on list.</td>
-						</tr>
-						<tr th:each="transaction, count : ${transactions}">
-						 	<td>
-								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].recipient|" 
-								th:value="${transaction.getRecipient()}"/>
-							</td>
-						 	<td>
-								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].description|" 
-								th:value="${transaction.getDescription()}"/>
-							</td>
-							<td>
-								<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].amount|" 
-								th:value="${transaction.getAmount()}"/>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-								
+				<thead>
+					<tr class="bg-success text-light">
+						<th class="text-center font-weight-normal" style="width: 33.33%">Connections</th>
+						<th class="text-center font-weight-normal" style="width: 33.33%">Description</th>
+						<th class="text-center font-weight-normal" style="width: 33.33%">Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:if="${transactions.empty}">
+						<td>No transactions on list.</td>
+					</tr>
+					<tr th:each="transaction, count : ${transactions}">
+						<td>
+							<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].recipient|"
+							th:value="${transaction.getRecipient().user.getEmail()}" />
+						</td>
+						<td>
+							<input class="border-0 text-center" type="text" readonly th:name="|transactions[${count.index}].description|"
+							th:value="${transaction.getDescription()}" />
+						</td>
+						<td>
+							<input class="border-0 text-center" readonly th:name="|transactions[${count.index}].amount|"
+							th:value="${transaction.getAmount()}" />
+						</td>
+					</tr>
+				</tbody>
+			</table>					
 		</div>
-																				
+
 	</div>
 </body>
 </html>

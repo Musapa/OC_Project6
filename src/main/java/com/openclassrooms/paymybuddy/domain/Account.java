@@ -37,7 +37,7 @@ public class Account {
 	}
 	
 	public Account(User user) {
-		balance = new BigDecimal(100.00);
+		balance = new BigDecimal(0);
 		transactions = new HashSet<>();
 		connections = new HashSet<>();
 	}

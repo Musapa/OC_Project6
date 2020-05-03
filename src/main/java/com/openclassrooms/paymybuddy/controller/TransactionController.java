@@ -1,6 +1,5 @@
 package com.openclassrooms.paymybuddy.controller;
 
-
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.Transaction;
@@ -28,21 +28,20 @@ import com.openclassrooms.paymybuddy.service.ConnectionService;
 import com.openclassrooms.paymybuddy.service.TransactionService;
 import com.openclassrooms.paymybuddy.service.UserService;
 
-
 @Controller
 public class TransactionController {
 
 	private static final Logger log = LoggerFactory.getLogger(TransactionController.class);
-	
+
 	@Autowired
 	private TransactionService transactionService;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private ConnectionService connectionService;
-	
+
 	@RequestMapping(value = { "home/transaction" }, method = RequestMethod.GET)
 	public ModelAndView getTransaction() {
 		ModelAndView model = new ModelAndView();
@@ -52,36 +51,44 @@ public class TransactionController {
 
 		User currentUser = userService.findUserByEmail(authentication.getName());
 		List<Connection> connections = connectionService.findConnectedUsers(currentUser);
-		
+
 		List<Transaction> transactions = transactionService.findTransactions(currentUser.getAccount());
-		
+
 		model.addObject("connections", connections);
 		model.addObject("transactions", transactions);
 		model.addObject("payment", new PaymentDto());
 		model.setViewName("transaction/transaction");
-		return model;	
+		return model;
 	}
-	
-	@RequestMapping(value = {"home/transaction/pay"}, method = RequestMethod.POST)
+
+	@RequestMapping(value = { "home/transaction/pay" }, method = RequestMethod.POST)
 	public String pay(@Valid @ModelAttribute PaymentDto form, Model model, BindingResult result) {
-
-		if (result.hasErrors()) {
-			System.out.println("There is a error in addPay.");
-			return "redirect:/error";
-		}
-
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		User thisUser = userService.findUserByEmail(authentication.getName());
-		
+
 		BigDecimal amount = form.getAmount();
-		BigDecimal feeRate = new BigDecimal("0.5");
-		BigDecimal fee = amount.multiply(feeRate).divide(new BigDecimal(100));
-		Optional<Connection> recipient = connectionService.findById(new Long(form.getConnection()));
-		Transaction transaction = new Transaction(amount, fee, form.getDescription(), recipient.get(), thisUser.getAccount());
-		
-		transactionService.save(transaction);
+		BigDecimal balance = thisUser.getAccount().getBalance();
+		BigDecimal remainder = balance.subtract(amount);
+
+		if (remainder.compareTo(BigDecimal.ZERO) < 0) {
+			result.rejectValue("amount", "error.form", "Insufficient funds.");
+		} 
+		if (result.hasErrors()) {
+			System.out.println("Insufficient funds. It is working.");
+		}else {
+			BigDecimal feeRate = new BigDecimal("0.5");
+			BigDecimal fee = amount.multiply(feeRate).divide(new BigDecimal(100));
+			Optional<Connection> recipient = connectionService.findById(new Long(form.getConnection()));
+			Transaction transaction = new Transaction(amount, fee, form.getDescription(), recipient.get(),
+					thisUser.getAccount());
+
+			transactionService.save(transaction);
+		}
 		
 		return "redirect:/home/transaction/";
-	}
+
+
+	}	
 }
