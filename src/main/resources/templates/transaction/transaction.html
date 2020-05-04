@@ -67,42 +67,49 @@
 
 
 		<div class="container col-md-8 mb-5">
-			<form class="form-horizontal" role="form" action="#" th:object="${payment}" th:action="@{/home/transaction/pay}" method="POST">
+			<form class="form-horizontal" role="form" action="#" th:object="${formData}" th:action="@{/home/transaction/pay}" method="POST">
 				
 				<div class="row">
 					<div class="form-group col-md-6">
-						<label for="exampleFormControlSelect1">Select A Connection</label>
+						<label for="connection">Select A Connection</label>
 						<select class="form-control" name="connection">
 							<option value="" style="font-weight: bold;">
 								Connections
 							</option>
 							<option th:each="connection : ${connections}"
-								th:value="${connection.id}" th:text="${connection.user.email}">
+								th:value="${connection.id}" id="connection" th:text="${connection.user.email}">
 							</option>
 						</select>
 					</div>
 					
-					<div class="row">
-						<div class="form-group col-md-5">
-							<label for="exampleFormControlTextarea1">Amount</label> <input
-								type="number" min="0" class="form-control" id="amount" th:field="*{amount}"
-								placeholder="0€" required/>
-						</div>
-						<div class="col-md-7">
-							<div class="form-control-feedback">
-								<span class="text-danger align-middle"
-									th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
-								</span>
-							</div>
+					<div class="form-group col-md-6">
+						<label for="amount">Amount</label> 
+						<input type="number" th:field="*{amount}" class="form-control" id="amount" 
+							   min="0" placeholder="0€" required/>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-control-feedback">
+							<span class="text-danger align-middle"
+								  th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
+							</span>
 						</div>
 					</div>
-					
+				</div>
+				<div class="row">
 					<div class="form-group col-md-12">
-						<label for="exampleFormControlTextarea1">Description</label>
-						<textarea class="form-control" id="exampleFormControlTextarea1"
-							rows="2" th:field="*{description}"
+						<label for="description">Description</label>
+						<textarea class="form-control" id="description"
+							rows="2" th:field="*{description}" 
 							placeholder="Write a description ..."></textarea>
 					</div>
+				</div>
+				
+					<!-- <div class="col-md-12">
+						<div class="alert alert-success" role="alert" th:if="${msgSucc}"
+						th:utext="${msgSucc}"></div>
+					</div>-->
 
 					<div class="col-md-12">
 						<button type="submit" class="btn btn-success btn-block ">
@@ -110,7 +117,6 @@
 						</button>
 					</div>
 					
-				</div>
 			</form>
 		</div>
 
