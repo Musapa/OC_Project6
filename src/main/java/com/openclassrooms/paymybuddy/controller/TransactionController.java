@@ -43,7 +43,7 @@ public class TransactionController {
 	private ConnectionService connectionService;
 
 	@RequestMapping(value = { "home/transaction" }, method = RequestMethod.GET)
-	public ModelAndView getTransaction(@Valid PaymentDto formData){
+	public ModelAndView getTransaction() {
 		ModelAndView model = new ModelAndView();
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -56,46 +56,46 @@ public class TransactionController {
 
 		model.addObject("connections", connections);
 		model.addObject("transactions", transactions);
-		model.addObject("formData", new PaymentDto());
+		model.addObject("payment", new PaymentDto());
 		model.setViewName("transaction/transaction");
 		return model;
 	}
 
 	@RequestMapping(value = { "home/transaction/pay" }, method = RequestMethod.POST)
-	public ModelAndView pay(@Valid PaymentDto formData, BindingResult result) {
+	public ModelAndView pay(@Valid PaymentDto form, BindingResult result) {
 		ModelAndView model = new ModelAndView();
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		User thisUser = userService.findUserByEmail(authentication.getName());
 
-		BigDecimal amount = formData.getAmount();
+		BigDecimal amount = form.getAmount();
 		BigDecimal balance = thisUser.getAccount().getBalance();
 		BigDecimal remainder = balance.subtract(amount);
 
 		if (remainder.compareTo(BigDecimal.ZERO) < 0) {
-			result.rejectValue("amount", "error.formData", "Insufficient funds.");
+			result.rejectValue("amount", "error.form", "Insufficient funds.");
 		} 
 		if (result.hasErrors()) {
 			model.setViewName("transaction/transaction");
 		}else {
 			BigDecimal feeRate = new BigDecimal("0.5");
 			BigDecimal fee = amount.multiply(feeRate).divide(new BigDecimal(100));
-			Optional<Connection> recipient = connectionService.findById(new Long(formData.getConnection()));
-			Transaction transaction = new Transaction(amount, fee, formData.getDescription(), recipient.get(),
+			Optional<Connection> recipient = connectionService.findById(new Long(form.getConnection()));
+			Transaction transaction = new Transaction(amount, fee, form.getDescription(), recipient.get(),
 					thisUser.getAccount());
 
 			transactionService.save(transaction);
-			model.addObject("msgSucc", "Transaction succeeded!");
-			User currentUser = userService.findUserByEmail(authentication.getName());
-			List<Connection> connections = connectionService.findConnectedUsers(currentUser);
-			List<Transaction> transactions = transactionService.findTransactions(currentUser.getAccount());
-			model.addObject("connections", connections);
-			model.addObject("transactions", transactions);
-			model.addObject("formData", formData);
-			
-			model.setViewName("transaction/transaction");
 		}
+		
+		User currentUser = userService.findUserByEmail(authentication.getName());
+		List<Connection> connections = connectionService.findConnectedUsers(currentUser);
+		List<Transaction> transactions = transactionService.findTransactions(currentUser.getAccount());
+
+		model.addObject("connections", connections);
+		model.addObject("transactions", transactions);
+		model.addObject("payment", form);
+		model.setViewName("transaction/transaction");
 
 		return model;
 
