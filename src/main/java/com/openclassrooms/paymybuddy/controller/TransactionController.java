@@ -12,14 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.Transaction;
 import com.openclassrooms.paymybuddy.domain.User;
@@ -62,7 +61,7 @@ public class TransactionController {
 	}
 
 	@RequestMapping(value = { "home/transaction/pay" }, method = RequestMethod.POST)
-	public ModelAndView pay(@Valid PaymentDto form, BindingResult result) {
+	public ModelAndView pay(@Valid @ModelAttribute("payment") PaymentDto form, BindingResult result) {
 		ModelAndView model = new ModelAndView();
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -70,7 +69,8 @@ public class TransactionController {
 		User thisUser = userService.findUserByEmail(authentication.getName());
 
 		BigDecimal amount = form.getAmount();
-		BigDecimal balance = thisUser.getAccount().getBalance();
+		Account account = thisUser.getAccount();
+		BigDecimal balance = account.getBalance();
 		BigDecimal remainder = balance.subtract(amount);
 
 		if (remainder.compareTo(BigDecimal.ZERO) < 0) {
@@ -86,6 +86,10 @@ public class TransactionController {
 					thisUser.getAccount());
 
 			transactionService.save(transaction);
+			account.setBalance(remainder);
+			userService.saveUser(thisUser);
+			
+			form = new PaymentDto();
 		}
 		
 		User currentUser = userService.findUserByEmail(authentication.getName());

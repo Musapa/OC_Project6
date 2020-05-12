@@ -73,38 +73,29 @@
 					<div class="form-group col-md-6">
 						<label for="connection">Select A Connection</label>
 						<select class="form-control" name="connection">
-							<option value="" style="font-weight: bold;">
-								Connections
-							</option>
-							<option th:each="connection : ${connections}"
-								th:value="${connection.id}" id="connection" th:text="${connection.user.email}">
+							<option value="" style="font-weight: bold;">Connections</option>
+							<option th:each="connection : ${connections}" th:value="${connection.id}" 
+									id="connection" th:text="${connection.user.email}" th:field="*{connection}">
 							</option>
 						</select>
-					</div>
+						<p th:if="${#fields.hasErrors('connection')}" th:errors="*{connection}">message</p>	
+					</div>				
+					
 					<div class="form-group col-md-6">
-						<label for="amount">Amount</label> 
-						<input type="number" th:field="*{amount}" class="form-control" id="amount" 
-							   min="0" placeholder="0€" required/>	  
-					</div>
-				</div>
-				
-				<div class="row">
-					<div class="col-md-12">
-						<div class="form-control-feedback">
-							<span class="text-danger align-middle"
-								  th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">
-							</span>
-						</div>
-					</div>
+						<label for="amount">Amount</label>
+						<input type="number" required value="0" class="form-control" th:field="*{amount}"/>
+						<p th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">message</p>	  
+					</div>				
 				</div>
 				<div class="row">
 					<div class="form-group col-md-12">
 						<label for="description">Description</label>
 						<textarea class="form-control" id="description"
-							rows="2" th:field="*{description}" 
-							placeholder="Write a description ..."></textarea>
+							rows="2" placeholder="Write a description ..." th:field="*{description}"></textarea>
 					</div>
-				</div>
+					<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}">message</p>
+				</div>						
+				
 				<div class="col-md-12">
 					<button type="submit" class="btn btn-success btn-block ">
 						<i class="fa fa-user-plus"></i> Pay

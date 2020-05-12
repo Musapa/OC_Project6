@@ -2,11 +2,26 @@ package com.openclassrooms.paymybuddy.dto;
 
 import java.math.BigDecimal;
 
-public class PaymentDto {
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
+public class PaymentDto {
+		
+	@NotNull
+	@DecimalMin(value="0.9", message = "Amount must not be zero")
 	private BigDecimal amount;
+	@NotEmpty(message = "Description must not be blank.")
 	private String description;
+	@NotEmpty(message = "Connection must not be blank.")
 	private String connection;
+		
+	public PaymentDto() {
+		this.amount = BigDecimal.ZERO;
+		this.description = "";
+		this.connection = "";
+	}
 	
 	
 	public BigDecimal getAmount() {
