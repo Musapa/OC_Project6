@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class Account {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "account_id")
 	private Long id;
 
@@ -31,13 +31,13 @@ public class Account {
 	private Set<Connection> connections;
 
 	public Account() {
-		balance = new BigDecimal(0);
+		balance = new BigDecimal(100.00);
 		transactions = new HashSet<>();
 		connections = new HashSet<>();
 	}
 	
 	public Account(User user) {
-		balance = new BigDecimal(0);
+		balance = new BigDecimal(100.00);
 		transactions = new HashSet<>();
 		connections = new HashSet<>();
 	}
