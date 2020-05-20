@@ -26,31 +26,15 @@ import com.openclassrooms.paymybuddy.Application;
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
 @WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
-public class ConnectionControllerTest {
-	
-	private MockMvc mockMvc;
-
-	@Autowired
-	private WebApplicationContext webContext;
-
-	@Autowired
-	private ObjectMapper objectMapper;
-
-	@Before
-	public void setupMockmvc() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
-	}
+public class ConnectionControllerTest extends BaseDataTest {
 
 	@Test
 	public void connectionHomeTest() throws Exception {
-		mockMvc.perform(post("/signup").param("email", "test@mail.com").param("password", "1234"))
-		.andExpect(view().name("user/signup")).andExpect(model().errorCount(0))
-		.andExpect(status().isOk());
-		
-		MvcResult result = mockMvc.perform(get("/home/connection")).andExpect(view().name("connection/connection"))
-				.andExpect(model().errorCount(0)).andExpect(status().isOk()).andReturn();
-		
-		String content = result.getResponse().getContentAsString();
-		System.out.println("Content" + content);
+		super.testRegisterUser();
+		super.testAddConnection();
+		super.testUserRepository();
+		super.testConnectionrRepository();
+
+		// TODO check repositoryes in BaseData
 	}
 }
