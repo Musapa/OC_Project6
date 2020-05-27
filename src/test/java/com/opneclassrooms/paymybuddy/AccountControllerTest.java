@@ -18,6 +18,7 @@ public class AccountControllerTest extends BaseDataTest {
 	@Test
 	public void accountHomeTest() throws Exception {
 		super.testRegisterUser();
+		super.testUserRepository();
 		super.testAccountBalance();
 		super.testAccountRepository();
 	}
