@@ -20,8 +20,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.User;
+import com.openclassrooms.paymybuddy.dto.ConnectionDto;
+import com.openclassrooms.paymybuddy.dto.UserSelectDto;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
+
+import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 
 public class BaseDataTest {
 
@@ -54,38 +58,32 @@ public class BaseDataTest {
 		mockMvc.perform(post("/signup").param("email", "test2@mail.com").param("password", "1234"))
 				.andExpect(view().name("user/signup")).andExpect(model().errorCount(1)).andExpect(status().isOk());
 
+		mockMvc.perform(post("/signup").param("email", "test3@mail.com").param("password", "1234"))
+				.andExpect(view().name("user/signup")).andExpect(model().errorCount(0)).andExpect(status().isOk());
+
+		mockMvc.perform(post("/signup").param("email", "test3@mail.com").param("password", "1234"))
+				.andExpect(view().name("user/signup")).andExpect(model().errorCount(1)).andExpect(status().isOk());
+
 		MvcResult result = mockMvc.perform(get("/home/connection")).andExpect(view().name("connection/connection"))
 				.andExpect(model().errorCount(0)).andExpect(status().isOk()).andReturn();
 
 		String content = result.getResponse().getContentAsString();
 		System.out.println("Content" + content);
-
-		// TODO check the Html in content contains
-
-		// <p class="pstyle_account"> Email: <span style="font-weight:
-		// 700;">test@mail.com</span></p>
-		// <p class="pstyle_account"> Balance: <span style="font-weight:
-		// 700;">100.00</span></p>
 	}
 
 	protected void testAddConnection() throws Exception {
-		// TODO add connections
-		mockMvc.perform(post("/home/connection").param("email", "test@mail.com"))
-				.andExpect(view().name("redirect:/home/connection/")).andExpect(model().errorCount(0))
-				.andExpect(status().isFound());
-
-		mockMvc.perform(post("/home/connection").param("email", "test2@mail.com"))
-				.andExpect(view().name("redirect:/home/connection/")).andExpect(model().errorCount(0))
-				.andExpect(status().isFound());
-
-		mockMvc.perform(post("/home/connection")).andExpect(view().name("redirect:/home/connection/"))
-				.andExpect(model().errorCount(0)).andExpect(status().isFound()).andReturn();
+		ConnectionDto connectionDto = new ConnectionDto();
+		User user1 = userRepository.findByEmail("test2@mail.com");
+		connectionDto.addUser(new UserSelectDto(user1, true));
+		mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/home/connection", connectionDto))
+				.andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
 	}
 
 	protected void testUserRepository() {
-		assertEquals("2 users expected", 2, userRepository.count());
+		assertEquals("3 users expected", 3, userRepository.count());
 		assertNotNull("Can't find email: test@mail.com", userRepository.findByEmail("test@mail.com"));
 		assertNotNull("Can't find email: test2@mail.com", userRepository.findByEmail("test2@mail.com"));
+		assertNotNull("Can't find email: test3@mail.com", userRepository.findByEmail("test3@mail.com"));
 	}
 
 	protected void testConnectionrRepository() {
@@ -105,7 +103,8 @@ public class BaseDataTest {
 		String content = result.getResponse().getContentAsString();
 		int foundUser = content.indexOf("test@mail.com");
 		assertNotEquals("Cannot find user", foundUser, -1);
-		int foundBalance = content.indexOf("<p class=\"pstyle_account\"> Balance: <span style=\"font-weight: 700;\">100.00</span></p>");
+		int foundBalance = content
+				.indexOf("<p class=\"pstyle_account\"> Balance: <span style=\"font-weight: 700;\">100.00</span></p>");
 		assertNotEquals("Cannot find balance", foundBalance, -1);
 	}
 }

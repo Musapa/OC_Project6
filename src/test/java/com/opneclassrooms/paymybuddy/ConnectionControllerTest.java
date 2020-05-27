@@ -18,8 +18,8 @@ public class ConnectionControllerTest extends BaseDataTest {
 	@Test
 	public void connectionHomeTest() throws Exception {
 		super.testRegisterUser();
-		super.testAddConnection();
 		super.testUserRepository();
+		super.testAddConnection();
 		super.testConnectionrRepository();
 
 		// TODO check repositoryes in BaseData

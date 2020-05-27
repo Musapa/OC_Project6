@@ -47,7 +47,7 @@ public class ConnectionController {
 		List<UserSelectDto> selectedUsers = new ArrayList<>();
 
 		for (User user : users) {
-			selectedUsers.add(new UserSelectDto(user));
+			selectedUsers.add(new UserSelectDto(user, false));
 		}
 
 		log.info("Get Connection: " + authentication.getName() + " Number of connections " + users.size());

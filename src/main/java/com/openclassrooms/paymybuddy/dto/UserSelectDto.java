@@ -9,8 +9,9 @@ public class UserSelectDto extends User {
 	public UserSelectDto() {
 	}
 
-	public UserSelectDto(User user) {
+	public UserSelectDto(User user, boolean selected) {
 		super(user);
+		this.selected = selected;
 	}
 
 	public boolean getSelected() {
