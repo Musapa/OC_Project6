@@ -42,14 +42,6 @@ public class Account {
 		connections = new HashSet<>();
 	}
 
-	public void withdraw() {
-
-	}
-
-	public void deposit() {
-
-	}
-
 	public Long getId() {
 		return id;
 	}

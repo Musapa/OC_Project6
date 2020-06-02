@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.User;
+import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.dto.ConnectionDto;
 import com.openclassrooms.paymybuddy.dto.UserSelectDto;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
+import com.openclassrooms.paymybuddy.repository.ConnectionRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 
 import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
@@ -39,6 +42,9 @@ public class BaseDataTest {
 
 	@Autowired
 	private AccountRepository accountRepository;
+	
+	@Autowired
+	private ConnectionRepository connectionRepository;
 
 	@Before
 	public void setupMockmvc() {
@@ -86,8 +92,19 @@ public class BaseDataTest {
 		assertNotNull("Can't find email: test3@mail.com", userRepository.findByEmail("test3@mail.com"));
 	}
 
-	protected void testConnectionrRepository() {
-
+	protected void testConnectionRepository() {
+		User user = userRepository.findByEmail("test@mail.com");
+		ConnectionDto connectionDto = new ConnectionDto();
+		User conection1 = userRepository.findByEmail("test2@mail.com");
+		User connection2 = userRepository.findByEmail("test3@mail.com");
+		connectionDto.addUser(new UserSelectDto(conection1, true));
+		connectionDto.addUser(new UserSelectDto(connection2, true));
+		
+		List<User> unconnectedUsers = connectionRepository.findUnconnectedUsers(conection1);
+		List<Connection> findConnections = connectionRepository.findConnections(conection1);
+		
+		
+		
 	}
 
 	protected void testAccountRepository() {

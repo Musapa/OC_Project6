@@ -20,7 +20,7 @@ public class TransactionControllerTest extends BaseDataTest {
 		super.testRegisterUser();
 		super.testAddConnection();
 		super.testUserRepository();
-		super.testConnectionrRepository();
+		super.testConnectionRepository();
 		
 		//TODO mockMvc addTransaction with errorHandling 
 		
