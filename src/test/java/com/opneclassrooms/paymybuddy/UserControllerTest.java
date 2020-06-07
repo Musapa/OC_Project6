@@ -19,7 +19,6 @@ public class UserControllerTest extends BaseDataTest {
 	public void testRegistration() throws Exception {
 		super.testRegisterUser();
 		super.testUserRepository();
-		// TODO UserRepository check
 	}
 
 }

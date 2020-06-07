@@ -11,24 +11,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.openclassrooms.paymybuddy.domain.Account;
-import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.domain.Connection;
+import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.dto.ConnectionDto;
+import com.openclassrooms.paymybuddy.dto.PaymentDto;
 import com.openclassrooms.paymybuddy.dto.UserSelectDto;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
 import com.openclassrooms.paymybuddy.repository.ConnectionRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
-
-import io.florianlopes.spring.test.web.servlet.request.MockMvcRequestBuilderUtils;
 
 public class BaseDataTest {
 
@@ -42,7 +43,7 @@ public class BaseDataTest {
 
 	@Autowired
 	private AccountRepository accountRepository;
-	
+
 	@Autowired
 	private ConnectionRepository connectionRepository;
 
@@ -81,8 +82,47 @@ public class BaseDataTest {
 		ConnectionDto connectionDto = new ConnectionDto();
 		User user1 = userRepository.findByEmail("test2@mail.com");
 		connectionDto.addUser(new UserSelectDto(user1, true));
-		mockMvc.perform(MockMvcRequestBuilderUtils.postForm("/home/connection", connectionDto))
-				.andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
+		mockMvc.perform(post("/home/connection").contentType(MediaType.APPLICATION_FORM_URLENCODED).flashAttr("form",
+				connectionDto)).andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
+	}
+
+	// TODO make transaction controller test for getTransaction() and pay()
+	protected void testPay() throws Exception {
+		
+		//logged in user
+		User user1 = userRepository.findByEmail("test2@mail.com");
+		Account account = user1.getAccount();
+		PaymentDto paymentDto = new PaymentDto();
+		Optional<Connection> recipient = connectionRepository.findById(new Long(paymentDto.getConnection()));
+		
+		//logged in user
+		User recipientUser = recipient.get().getUser();
+		//recipient who will pay
+		Account recipientAccount = recipientUser.getAccount();
+		//recipientBalance before pay
+		BigDecimal recipientBalance = account.getBalance();
+		//recipientBalance after pay
+		BigDecimal newRecipientBalance = recipientBalance.add(BigDecimal.valueOf(12000, 2));
+		
+		recipientAccount.setBalance(newRecipientBalance);
+		
+		mockMvc.perform(post("home/transaction/pay").param("email", "test2@mail.com").param("payment", "1200"))
+		.andExpect(view().name("transaction/transaction")).andExpect(model().errorCount(0)).andExpect(status().isOk());	
+	}
+
+	protected void testAccountRepository() {
+		User user = userRepository.findByEmail("test2@mail.com");
+		Account account = user.getAccount();
+		assertEquals("Initial balance should be 100", account.getBalance(), BigDecimal.valueOf(10000, 2));
+	}
+
+	protected void testConnectionRepository() {
+		User user = userRepository.findByEmail("test@mail.com");
+		List<User> unconnectedUsers = connectionRepository.findUnconnectedUsers(user);
+		List<Connection> findConnections = connectionRepository.findConnections(user);
+
+		assertEquals("Expected 1 unconnected user", 1, unconnectedUsers.size());
+		assertEquals("Expected 1 connected user", 1, findConnections.size());
 	}
 
 	protected void testUserRepository() {
@@ -90,27 +130,6 @@ public class BaseDataTest {
 		assertNotNull("Can't find email: test@mail.com", userRepository.findByEmail("test@mail.com"));
 		assertNotNull("Can't find email: test2@mail.com", userRepository.findByEmail("test2@mail.com"));
 		assertNotNull("Can't find email: test3@mail.com", userRepository.findByEmail("test3@mail.com"));
-	}
-
-	protected void testConnectionRepository() {
-		User user = userRepository.findByEmail("test@mail.com");
-		ConnectionDto connectionDto = new ConnectionDto();
-		User conection1 = userRepository.findByEmail("test2@mail.com");
-		User connection2 = userRepository.findByEmail("test3@mail.com");
-		connectionDto.addUser(new UserSelectDto(conection1, true));
-		connectionDto.addUser(new UserSelectDto(connection2, true));
-		
-		List<User> unconnectedUsers = connectionRepository.findUnconnectedUsers(conection1);
-		List<Connection> findConnections = connectionRepository.findConnections(conection1);
-		
-		
-		
-	}
-
-	protected void testAccountRepository() {
-		User user = userRepository.findByEmail("test2@mail.com");
-		Account account = user.getAccount();
-		assertEquals("Initial balance should be 100", account.getBalance(), BigDecimal.valueOf(10000, 2));
 	}
 
 	protected void testAccountBalance() throws Exception {

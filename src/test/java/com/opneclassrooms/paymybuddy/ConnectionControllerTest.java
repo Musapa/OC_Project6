@@ -21,7 +21,5 @@ public class ConnectionControllerTest extends BaseDataTest {
 		super.testUserRepository();
 		super.testAddConnection();
 		super.testConnectionRepository();
-
-		// TODO check repositoryes in BaseData
 	}
 }

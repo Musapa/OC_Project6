@@ -56,11 +56,11 @@ public class ConnectionController {
 		model.setViewName("connection/connection");
 
 		return model;
-	}	
-	
-	@RequestMapping(value = { "home/connection" }, method = RequestMethod.POST)
-	public String addConnection(@Valid @ModelAttribute ConnectionDto form, Model model, BindingResult result) {
+	}
 
+	@RequestMapping(value = { "home/connection" }, method = RequestMethod.POST)
+	public String addConnection(@Valid @ModelAttribute("form") ConnectionDto form, Model model, BindingResult result) {
+		
 		if (result.hasErrors()) {
 			System.out.println("There is a error in addConnection.");
 			return "redirect:/error";

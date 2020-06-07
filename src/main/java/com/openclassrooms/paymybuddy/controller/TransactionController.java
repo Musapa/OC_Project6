@@ -81,6 +81,7 @@ public class TransactionController {
 		}else {
 			BigDecimal feeRate = new BigDecimal("0.5");
 			BigDecimal fee = amount.multiply(feeRate).divide(new BigDecimal(100));
+		
 			Optional<Connection> recipient = connectionService.findById(new Long(form.getConnection()));
 			Transaction transaction = new Transaction(amount, fee, form.getDescription(), recipient.get(),
 					thisUser.getAccount());
@@ -88,6 +89,14 @@ public class TransactionController {
 			transactionService.save(transaction);
 			account.setBalance(remainder);
 			userService.saveUser(thisUser);
+			
+			User recipientUser = recipient.get().getUser();
+			Account recipientAccount = recipientUser.getAccount();
+			BigDecimal recipientBalance = account.getBalance();
+			BigDecimal newRecipientBalance = recipientBalance.add(amount);
+			
+			recipientAccount.setBalance(newRecipientBalance);
+			userService.saveUser(recipientUser);
 			
 			form = new PaymentDto();
 		}

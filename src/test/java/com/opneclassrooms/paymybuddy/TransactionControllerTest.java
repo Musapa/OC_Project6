@@ -21,7 +21,7 @@ public class TransactionControllerTest extends BaseDataTest {
 		super.testAddConnection();
 		super.testUserRepository();
 		super.testConnectionRepository();
-		
+		super.testPay();
 		//TODO mockMvc addTransaction with errorHandling 
 		
 		// 1 transaction that check fail "110" and than succed and check HTMl
