@@ -11,7 +11,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +22,14 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Connection;
+import com.openclassrooms.paymybuddy.domain.Transaction;
 import com.openclassrooms.paymybuddy.domain.User;
 import com.openclassrooms.paymybuddy.dto.ConnectionDto;
 import com.openclassrooms.paymybuddy.dto.PaymentDto;
 import com.openclassrooms.paymybuddy.dto.UserSelectDto;
 import com.openclassrooms.paymybuddy.repository.AccountRepository;
 import com.openclassrooms.paymybuddy.repository.ConnectionRepository;
+import com.openclassrooms.paymybuddy.repository.TransactionRepository;
 import com.openclassrooms.paymybuddy.repository.UserRepository;
 
 public class BaseDataTest {
@@ -46,6 +47,9 @@ public class BaseDataTest {
 
 	@Autowired
 	private ConnectionRepository connectionRepository;
+	
+	@Autowired
+	private TransactionRepository transactionRepository;
 
 	@Before
 	public void setupMockmvc() {
@@ -85,31 +89,43 @@ public class BaseDataTest {
 		mockMvc.perform(post("/home/connection").contentType(MediaType.APPLICATION_FORM_URLENCODED).flashAttr("form",
 				connectionDto)).andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
 	}
-
-	// TODO make transaction controller test for getTransaction() and pay()
+	
 	protected void testPay() throws Exception {
-		
-		//logged in user
-		User user1 = userRepository.findByEmail("test2@mail.com");
-		Account account = user1.getAccount();
+		User user = userRepository.findByEmail("test@mail.com");
+		List<Connection> findConnections = connectionRepository.findConnections(user);
 		PaymentDto paymentDto = new PaymentDto();
-		Optional<Connection> recipient = connectionRepository.findById(new Long(paymentDto.getConnection()));
+
+		paymentDto.setAmount(new BigDecimal(1200));
+		paymentDto.setDescription("Invalid Payment");
+		paymentDto.setConnection(findConnections.get(0).getId().toString());
+
+		mockMvc.perform(post("/home/transaction/pay").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.flashAttr("payment", paymentDto)).andExpect(view().name("transaction/transaction"))
+				.andExpect(model().errorCount(1)).andExpect(status().isOk());
 		
-		//logged in user
-		User recipientUser = recipient.get().getUser();
-		//recipient who will pay
-		Account recipientAccount = recipientUser.getAccount();
-		//recipientBalance before pay
-		BigDecimal recipientBalance = account.getBalance();
-		//recipientBalance after pay
-		BigDecimal newRecipientBalance = recipientBalance.add(BigDecimal.valueOf(12000, 2));
+		paymentDto.setAmount(new BigDecimal(25));
+		paymentDto.setDescription("Valid Payment");
 		
-		recipientAccount.setBalance(newRecipientBalance);
+		mockMvc.perform(post("/home/transaction/pay").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.flashAttr("payment", paymentDto)).andExpect(view().name("transaction/transaction"))
+				.andExpect(model().errorCount(0)).andExpect(status().isOk());
 		
-		mockMvc.perform(post("home/transaction/pay").param("email", "test2@mail.com").param("payment", "1200"))
-		.andExpect(view().name("transaction/transaction")).andExpect(model().errorCount(0)).andExpect(status().isOk());	
+		paymentDto.setAmount(new BigDecimal(45));
+		paymentDto.setDescription("Valid_2 Payment");
+		
+		mockMvc.perform(post("/home/transaction/pay").contentType(MediaType.APPLICATION_FORM_URLENCODED)
+				.flashAttr("payment", paymentDto)).andExpect(view().name("transaction/transaction"))
+				.andExpect(model().errorCount(0)).andExpect(status().isOk());
 	}
 
+	protected void testTransactionRepository() {
+		User user = userRepository.findByEmail("test@mail.com");
+		Account account = user.getAccount();
+		List<Transaction> transactions = transactionRepository.findTransactions(account);
+
+		assertEquals("Expected 1 transaction", 2, transactions.size());
+	}
+	
 	protected void testAccountRepository() {
 		User user = userRepository.findByEmail("test2@mail.com");
 		Account account = user.getAccount();
