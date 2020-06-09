@@ -12,7 +12,7 @@ import com.openclassrooms.paymybuddy.Application;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
-@WithMockUser(username = "test@mail.com", password = "1234", roles = "USER")
+@WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
 public class UserControllerTest extends BaseDataTest {
 
 	@Test

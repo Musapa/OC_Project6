@@ -92,7 +92,7 @@ public class TransactionController {
 			
 			User recipientUser = recipient.get().getUser();
 			Account recipientAccount = recipientUser.getAccount();
-			BigDecimal recipientBalance = account.getBalance();
+			BigDecimal recipientBalance = recipientAccount.getBalance();
 			BigDecimal newRecipientBalance = recipientBalance.add(amount);
 			
 			recipientAccount.setBalance(newRecipientBalance);

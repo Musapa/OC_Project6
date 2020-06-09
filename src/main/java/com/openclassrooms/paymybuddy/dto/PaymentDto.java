@@ -3,7 +3,6 @@ package com.openclassrooms.paymybuddy.dto;
 import java.math.BigDecimal;
 
 import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
