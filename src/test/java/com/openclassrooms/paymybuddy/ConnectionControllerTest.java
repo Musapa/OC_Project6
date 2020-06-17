@@ -1,4 +1,4 @@
-package com.opneclassrooms.paymybuddy;
+package com.openclassrooms.paymybuddy;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

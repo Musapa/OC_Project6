@@ -1,4 +1,4 @@
-package com.opneclassrooms.paymybuddy;
+package com.openclassrooms.paymybuddy;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,12 +19,13 @@ import com.openclassrooms.paymybuddy.Application;
 @WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.ANY)
-public class UserControllerTest extends BaseDataTest {
-	
+public class AccountControllerTest extends BaseDataTest {
+
 	@Test
-	public void testRegistration() throws Exception {
+	public void accountHomeTest() throws Exception {
 		super.testRegisterUser();
 		super.testUserRepository();
+		super.testAccountBalance();
+		super.testAccountRepository();
 	}
-
 }

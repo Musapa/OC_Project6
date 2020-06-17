@@ -1,4 +1,4 @@
-package com.opneclassrooms.paymybuddy;
+package com.openclassrooms.paymybuddy;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
