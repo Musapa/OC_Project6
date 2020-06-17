@@ -28,7 +28,8 @@ public class TransactionControllerTest extends BaseDataTest {
 		super.testUserRepository();
 		super.testConnectionRepository();
 		super.testPay();
-		super.testTransactionRepository();		
+		super.testTransactionRepository();
+		super.getTransaction();
 	}
 
 }

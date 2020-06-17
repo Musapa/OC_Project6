@@ -47,7 +47,7 @@ public class BaseDataTest {
 
 	@Autowired
 	private ConnectionRepository connectionRepository;
-	
+
 	@Autowired
 	private TransactionRepository transactionRepository;
 
@@ -80,6 +80,7 @@ public class BaseDataTest {
 
 		String content = result.getResponse().getContentAsString();
 		System.out.println("Content" + content);
+
 	}
 
 	protected void testAddConnection() throws Exception {
@@ -89,7 +90,26 @@ public class BaseDataTest {
 		mockMvc.perform(post("/home/connection").contentType(MediaType.APPLICATION_FORM_URLENCODED).flashAttr("form",
 				connectionDto)).andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
 	}
-	
+
+	protected void getTransaction() throws Exception {
+		MvcResult result = mockMvc.perform(get("/home/transaction")).andExpect(view().name("transaction/transaction"))
+				.andExpect(model().errorCount(0)).andExpect(status().isOk()).andReturn();
+
+		String content = result.getResponse().getContentAsString();
+		System.out.println("Content transaction:" + content);
+
+		int foundConnection = content.indexOf("test2@mail.com");
+		assertNotEquals("Cannot find connection", foundConnection, -1);
+		int foundTransaction1 = content.indexOf("						<td>\r\n"
+				+ "							<input class=\"border-0 text-center\" readonly name=\"transactions[0].amount\"\r\n"
+				+ "							value=\"25.00\" />\r\n" + "						</td>");
+		assertNotEquals("Cannot find balance", foundTransaction1, -1);
+		int foundTransaction2 = content.indexOf("						<td>\r\n"
+				+ "							<input class=\"border-0 text-center\" readonly name=\"transactions[1].amount\"\r\n"
+				+ "							value=\"45.00\" />\r\n" + "						</td>");
+		assertNotEquals("Cannot find balance", foundTransaction2, -1);
+	}
+
 	protected void testPay() throws Exception {
 		User user = userRepository.findByEmail("test@mail.com");
 		List<Connection> findConnections = connectionRepository.findConnections(user);
@@ -102,17 +122,17 @@ public class BaseDataTest {
 		mockMvc.perform(post("/home/transaction/pay").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.flashAttr("payment", paymentDto)).andExpect(view().name("transaction/transaction"))
 				.andExpect(model().errorCount(1)).andExpect(status().isOk());
-		
+
 		paymentDto.setAmount(new BigDecimal(25));
 		paymentDto.setDescription("Valid Payment");
-		
+
 		mockMvc.perform(post("/home/transaction/pay").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.flashAttr("payment", paymentDto)).andExpect(view().name("transaction/transaction"))
 				.andExpect(model().errorCount(0)).andExpect(status().isOk());
-		
+
 		paymentDto.setAmount(new BigDecimal(45));
 		paymentDto.setDescription("Valid_2 Payment");
-		
+
 		mockMvc.perform(post("/home/transaction/pay").contentType(MediaType.APPLICATION_FORM_URLENCODED)
 				.flashAttr("payment", paymentDto)).andExpect(view().name("transaction/transaction"))
 				.andExpect(model().errorCount(0)).andExpect(status().isOk());
@@ -123,9 +143,9 @@ public class BaseDataTest {
 		Account account = user.getAccount();
 		List<Transaction> transactions = transactionRepository.findTransactions(account);
 
-		assertEquals("Expected 1 transaction", 2, transactions.size());
+		assertEquals("Expected 2 transactions", 2, transactions.size());
 	}
-	
+
 	protected void testAccountRepository() {
 		User user = userRepository.findByEmail("test2@mail.com");
 		Account account = user.getAccount();
