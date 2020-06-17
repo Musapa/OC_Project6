@@ -103,11 +103,11 @@ public class BaseDataTest {
 		int foundTransaction1 = content.indexOf("						<td>\r\n"
 				+ "							<input class=\"border-0 text-center\" readonly name=\"transactions[0].amount\"\r\n"
 				+ "							value=\"25.00\" />\r\n" + "						</td>");
-		assertNotEquals("Cannot find balance", foundTransaction1, -1);
+		assertNotEquals("Cannot find transaction", foundTransaction1, -1);
 		int foundTransaction2 = content.indexOf("						<td>\r\n"
 				+ "							<input class=\"border-0 text-center\" readonly name=\"transactions[1].amount\"\r\n"
 				+ "							value=\"45.00\" />\r\n" + "						</td>");
-		assertNotEquals("Cannot find balance", foundTransaction2, -1);
+		assertNotEquals("Cannot find transaction", foundTransaction2, -1);
 	}
 
 	protected void testPay() throws Exception {
