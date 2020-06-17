@@ -100,13 +100,10 @@ public class BaseDataTest {
 
 		int foundConnection = content.indexOf("test2@mail.com");
 		assertNotEquals("Cannot find connection", foundConnection, -1);
-		int foundTransaction1 = content.indexOf("						<td>\r\n"
-				+ "							<input class=\"border-0 text-center\" readonly name=\"transactions[0].amount\"\r\n"
-				+ "							value=\"25.00\" />\r\n" + "						</td>");
+		
+		int foundTransaction1 = content.indexOf("value=\"25.00\"");
 		assertNotEquals("Cannot find transaction", foundTransaction1, -1);
-		int foundTransaction2 = content.indexOf("						<td>\r\n"
-				+ "							<input class=\"border-0 text-center\" readonly name=\"transactions[1].amount\"\r\n"
-				+ "							value=\"45.00\" />\r\n" + "						</td>");
+		int foundTransaction2 = content.indexOf("value=\"45.00\"");
 		assertNotEquals("Cannot find transaction", foundTransaction2, -1);
 	}
 
