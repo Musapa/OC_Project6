@@ -12,7 +12,7 @@ import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.User;
 
 @Repository	
-public class ConnectionRepositoryImpl implements ConnectionRepositoryCustom {
+public class ConnectionRepositoryImpl implements ConnectionRepositoryQuery {
 
 	@PersistenceContext
 	EntityManager entityManager;

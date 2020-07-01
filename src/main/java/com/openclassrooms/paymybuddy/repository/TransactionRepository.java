@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.openclassrooms.paymybuddy.domain.Transaction;
 
 @Repository("transactionRepository")
-public interface TransactionRepository extends JpaRepository<Transaction, Long>, TransactionRepositoryCustom {
+public interface TransactionRepository extends JpaRepository<Transaction, Long>, TransactionRepositoryQuery {
 
 }

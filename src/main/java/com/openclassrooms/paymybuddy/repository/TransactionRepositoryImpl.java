@@ -9,7 +9,7 @@ import javax.persistence.Query;
 import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Transaction;
 
-public class TransactionRepositoryImpl implements TransactionRepositoryCustom {
+public class TransactionRepositoryImpl implements TransactionRepositoryQuery {
 
 	@PersistenceContext
 	EntityManager entityManager;

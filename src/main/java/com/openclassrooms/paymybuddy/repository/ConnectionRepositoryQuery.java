@@ -5,7 +5,7 @@ import java.util.List;
 import com.openclassrooms.paymybuddy.domain.Connection;
 import com.openclassrooms.paymybuddy.domain.User;
 
-public interface ConnectionRepositoryCustom {
+public interface ConnectionRepositoryQuery {
 
 	List<User> findUnconnectedUsers(User user);
 	
