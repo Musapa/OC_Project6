@@ -35,6 +35,7 @@ import com.openclassrooms.paymybuddy.repository.UserRepository;
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
 @WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 public class UserControllerTest{
 	private MockMvc mockMvc;
@@ -45,22 +46,20 @@ public class UserControllerTest{
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
-	private ConnectionRepository connectionRepository;
-
-	@Autowired
-	private TransactionRepository transactionRepository;
-
 	@Before
 	public void setupMockmvc() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
 	}
 	
 	@Test
-	public void testRegisterUser() throws Exception {
+	public void testUser() throws Exception{
+		/* Register users */
+		testRegisterUser();
+		/* Check that registered users are in database */
+		testUserRepository();
+	}
+	
+	private void testRegisterUser() throws Exception {
 		mockMvc.perform(post("/signup").param("email", "test@mail.com").param("password", "1234"))
 				.andExpect(view().name("user/signup")).andExpect(model().errorCount(0)).andExpect(status().isOk());
 
@@ -86,8 +85,7 @@ public class UserControllerTest{
 		System.out.println("Content" + content);
 	}
 
-	@Test
-	public void testUserRepository() {
+	private void testUserRepository() {
 		assertEquals("3 users expected", 3, userRepository.count());
 		assertNotNull("Can't find email: test@mail.com", userRepository.findByEmail("test@mail.com"));
 		assertNotNull("Can't find email: test2@mail.com", userRepository.findByEmail("test2@mail.com"));

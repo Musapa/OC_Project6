@@ -47,6 +47,7 @@ import com.openclassrooms.paymybuddy.repository.UserRepository;
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
 @WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 public class TransactionControllerTest {
 
@@ -57,9 +58,6 @@ public class TransactionControllerTest {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private AccountRepository accountRepository;
 
 	@Autowired
 	private ConnectionRepository connectionRepository;
@@ -73,7 +71,19 @@ public class TransactionControllerTest {
 	}
 
 	@Test
-	public void testRegisterUser() throws Exception {
+	public void testTransaction() throws Exception {
+		/* Register users */
+		testRegisterUser();
+		/* Check that registered users are in database */
+		testUserRepository();
+		testAddConnection();
+		testConnectionRepository();
+		testPay();
+		testTransactionRepository();
+		testGetTransactions();
+	}
+
+	private void testRegisterUser() throws Exception {
 		mockMvc.perform(post("/signup").param("email", "test@mail.com").param("password", "1234"))
 				.andExpect(view().name("user/signup")).andExpect(model().errorCount(0)).andExpect(status().isOk());
 
@@ -100,8 +110,7 @@ public class TransactionControllerTest {
 
 	}
 
-	@Test
-	public void testAddConnection() throws Exception {
+	private void testAddConnection() throws Exception {
 		ConnectionDto connectionDto = new ConnectionDto();
 		User user1 = userRepository.findByEmail("test2@mail.com");
 		connectionDto.addUser(new UserSelectDto(user1, true));
@@ -109,16 +118,14 @@ public class TransactionControllerTest {
 				connectionDto)).andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
 	}
 
-	@Test
-	public void testUserRepository() {
+	private void testUserRepository() {
 		assertEquals("3 users expected", 3, userRepository.count());
 		assertNotNull("Can't find email: test@mail.com", userRepository.findByEmail("test@mail.com"));
 		assertNotNull("Can't find email: test2@mail.com", userRepository.findByEmail("test2@mail.com"));
 		assertNotNull("Can't find email: test3@mail.com", userRepository.findByEmail("test3@mail.com"));
 	}
 
-	@Test
-	public void testConnectionRepository() {
+	private void testConnectionRepository() {
 		User user = userRepository.findByEmail("test@mail.com");
 		List<User> unconnectedUsers = connectionRepository.findUnconnectedUsers(user);
 		List<Connection> findConnections = connectionRepository.findConnections(user);
@@ -127,8 +134,7 @@ public class TransactionControllerTest {
 		assertEquals("Expected 1 connected user", 1, findConnections.size());
 	}
 
-	@Test
-	public void testPay() throws Exception {
+	private void testPay() throws Exception {
 		User user = userRepository.findByEmail("test@mail.com");
 		List<Connection> findConnections = connectionRepository.findConnections(user);
 		PaymentDto paymentDto = new PaymentDto();
@@ -156,8 +162,7 @@ public class TransactionControllerTest {
 				.andExpect(model().errorCount(0)).andExpect(status().isOk());
 	}
 
-	@Test
-	public void testTransactionRepository() {
+	private void testTransactionRepository() {
 		User user = userRepository.findByEmail("test@mail.com");
 		Account account = user.getAccount();
 		List<Transaction> transactions = transactionRepository.findTransactions(account);
@@ -165,8 +170,7 @@ public class TransactionControllerTest {
 		assertEquals("Expected 2 transactions", 2, transactions.size());
 	}
 
-	@Test
-	public void getTransaction() throws Exception {
+	private void testGetTransactions() throws Exception {
 		MvcResult result = mockMvc.perform(get("/home/transaction")).andExpect(view().name("transaction/transaction"))
 				.andExpect(model().errorCount(0)).andExpect(status().isOk()).andReturn();
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Transaction;
@@ -16,11 +17,13 @@ public class TransactionServiceImpl implements TransactionService {
 	private TransactionRepository transactionRepository;
 	
 	@Override
+	@Transactional
 	public void save(Transaction transaction) {
 		transactionRepository.save(transaction);
 	}
 		
 	@Override
+	@Transactional
 	public List<Transaction> findTransactions(Account account){
 		return transactionRepository.findTransactions(account);
 	}

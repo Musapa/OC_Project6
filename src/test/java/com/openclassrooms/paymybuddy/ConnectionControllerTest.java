@@ -42,6 +42,7 @@ import com.openclassrooms.paymybuddy.repository.UserRepository;
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
 @WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 public class ConnectionControllerTest {
 
@@ -54,13 +55,7 @@ public class ConnectionControllerTest {
 	private UserRepository userRepository;
 
 	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
 	private ConnectionRepository connectionRepository;
-
-	@Autowired
-	private TransactionRepository transactionRepository;
 
 	@Before
 	public void setupMockmvc() {
@@ -68,7 +63,16 @@ public class ConnectionControllerTest {
 	}
 
 	@Test
-	public void testRegisterUser() throws Exception {
+	public void testConnection() throws Exception {
+		/* Register users */
+		testRegisterUser();
+		/* Check that registered users are in database */
+		testUserRepository();
+		testAddConnection();
+		testConnectionRepository();
+	}
+
+	private void testRegisterUser() throws Exception {
 		mockMvc.perform(post("/signup").param("email", "test@mail.com").param("password", "1234"))
 				.andExpect(view().name("user/signup")).andExpect(model().errorCount(0)).andExpect(status().isOk());
 
@@ -95,16 +99,14 @@ public class ConnectionControllerTest {
 
 	}
 
-	@Test
-	public void testUserRepository() {
+	private void testUserRepository() {
 		assertEquals("3 users expected", 3, userRepository.count());
 		assertNotNull("Can't find email: test@mail.com", userRepository.findByEmail("test@mail.com"));
 		assertNotNull("Can't find email: test2@mail.com", userRepository.findByEmail("test2@mail.com"));
 		assertNotNull("Can't find email: test3@mail.com", userRepository.findByEmail("test3@mail.com"));
 	}
 
-	@Test
-	public void testAddConnection() throws Exception {
+	private void testAddConnection() throws Exception {
 		ConnectionDto connectionDto = new ConnectionDto();
 		User user1 = userRepository.findByEmail("test2@mail.com");
 		connectionDto.addUser(new UserSelectDto(user1, true));
@@ -112,8 +114,7 @@ public class ConnectionControllerTest {
 				connectionDto)).andExpect(view().name("redirect:/home/transaction/")).andExpect(model().hasNoErrors());
 	}
 
-	@Test
-	public void testConnectionRepository() {
+	private void testConnectionRepository() {
 		User user = userRepository.findByEmail("test@mail.com");
 		List<User> unconnectedUsers = connectionRepository.findUnconnectedUsers(user);
 		List<Connection> findConnections = connectionRepository.findConnections(user);

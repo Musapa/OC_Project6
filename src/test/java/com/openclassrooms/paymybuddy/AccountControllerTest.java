@@ -40,6 +40,7 @@ import com.openclassrooms.paymybuddy.repository.UserRepository;
 @SpringBootTest(classes = Application.class)
 @ActiveProfiles("test")
 @WithMockUser(username = "test@mail.com", roles = { "ADMIN" })
+@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.ANY)
 public class AccountControllerTest {
 	
@@ -51,22 +52,24 @@ public class AccountControllerTest {
 	@Autowired
 	private UserRepository userRepository;
 
-	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
-	private ConnectionRepository connectionRepository;
-
-	@Autowired
-	private TransactionRepository transactionRepository;
-
 	@Before
 	public void setupMockmvc() {
 		mockMvc = MockMvcBuilders.webAppContextSetup(webContext).build();
 	}
 
 	@Test
-	public void testRegisterUser() throws Exception {
+	public void testAccount() throws Exception{
+		/* Register users */
+		testRegisterUser();
+		/* Check that registered users are in database */
+		testUserRepository();
+		/* */
+		testAccountBalance();
+		
+		testAccountRepository();
+	}
+	
+	private void testRegisterUser() throws Exception {
 		mockMvc.perform(post("/signup").param("email", "test@mail.com").param("password", "1234"))
 				.andExpect(view().name("user/signup")).andExpect(model().errorCount(0)).andExpect(status().isOk());
 
@@ -93,16 +96,14 @@ public class AccountControllerTest {
 
 	}
 	
-	@Test
-	public void testUserRepository() {
+	private void testUserRepository() {
 		assertEquals("3 users expected", 3, userRepository.count());
 		assertNotNull("Can't find email: test@mail.com", userRepository.findByEmail("test@mail.com"));
 		assertNotNull("Can't find email: test2@mail.com", userRepository.findByEmail("test2@mail.com"));
 		assertNotNull("Can't find email: test3@mail.com", userRepository.findByEmail("test3@mail.com"));
 	}
 	
-	@Test
-	public void testAccountBalance() throws Exception {
+	private void testAccountBalance() throws Exception {
 		MvcResult result = mockMvc.perform(get("/home/account")).andExpect(view().name("account/account"))
 				.andExpect(model().errorCount(0)).andExpect(status().isOk()).andReturn();
 
@@ -114,8 +115,7 @@ public class AccountControllerTest {
 		assertNotEquals("Cannot find balance", foundBalance, -1);
 	}
 	
-	@Test
-	public void testAccountRepository() {
+	private void testAccountRepository() {
 		User user = userRepository.findByEmail("test2@mail.com");
 		Account account = user.getAccount();
 		assertEquals("Initial balance should be 100", account.getBalance(), BigDecimal.valueOf(10000, 2));

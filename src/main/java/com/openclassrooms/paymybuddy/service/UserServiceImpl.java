@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.openclassrooms.paymybuddy.domain.Account;
 import com.openclassrooms.paymybuddy.domain.Role;
@@ -30,11 +31,13 @@ public class UserServiceImpl implements UserService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Override
+	@Transactional
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
 
 	@Override
+	@Transactional
 	public void createUser(User user) {
 		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		user.setActive(true);
@@ -45,11 +48,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional
 	public void saveUser(User user) {
 		userRepository.save(user);
 	}
 	
 	@Override
+	@Transactional
 	public Optional<User> findById(Long id){
 		return userRepository.findById(id);
 	}
