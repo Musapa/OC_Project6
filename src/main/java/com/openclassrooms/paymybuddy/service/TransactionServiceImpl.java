@@ -56,7 +56,11 @@ public class TransactionServiceImpl implements TransactionService {
 		Optional<Connection> recipient = connectionService.findById(new Long(payment.getConnection()));
 		Transaction transaction = new Transaction(amount, fee, payment.getDescription(), recipient.get(),
 				thisUser.getAccount());
-
+		
+		if (remainder.compareTo(BigDecimal.ZERO) < 0) {
+			throw new RuntimeException("Not enoguh money");
+		}
+		
 		save(transaction);
 		account.setBalance(remainder);
 		userService.saveUser(thisUser);
@@ -69,9 +73,6 @@ public class TransactionServiceImpl implements TransactionService {
 		recipientAccount.setBalance(newRecipientBalance);
 		userService.saveUser(recipientUser);
 
-		if (remainder.compareTo(BigDecimal.ZERO) < 0) {
-			throw new RuntimeException("Not enoguh money");
-		}
 	}
 
 }
