@@ -9,14 +9,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.openclassrooms.paymybuddy.domain.User;
-import com.openclassrooms.paymybuddy.service.AccountService;
 import com.openclassrooms.paymybuddy.service.UserService;
 
 @Controller
 public class AccountController {
-
-	@Autowired
-	private AccountService accountService;
 
 	@Autowired
 	private UserService userService;
